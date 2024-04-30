@@ -5,7 +5,7 @@ import LocationIcon from "@/assets/previewImages/LocationIcon.png";
 import TimeIcon from "@/assets/previewImages/TimeIcon.png";
 import PersonnelIcon from "@/assets/previewImages/PersonnelIcon.png";
 
-const Comment = () => {
+const PostPreview = () => {
   return (
     <>
       <div className="flex flex-row w-1/3 h-32 bg-white rounded-3xl p-3 border-solid border-2 mx-5">
@@ -57,4 +57,4 @@ const Comment = () => {
   );
 };
 
-export default Comment;
+export default PostPreview;

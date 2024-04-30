@@ -1,7 +1,7 @@
 import Image from "next/image";
 import PostPreview from "@/components/PostPreview"
 
-export default function Home() {
+const Home = () => {
   return (
     <main className="flex min-h-screen flex-col justify-between">
       <div className="flex flex-row min-h-screen justify-center p-24">
@@ -10,4 +10,6 @@ export default function Home() {
       </div>
     </main>
   );
-}
+};
+
+export default Home;
