@@ -1,15 +1,15 @@
 import Image from "next/image";
-import MainTab from "@/components/MainTab";
-import Test from "../../public/icons/test.svg";
-import NotificationItem from "@/components/NotificationItem";
+import PostPreview from "@/components/PostPreview"
 
-
-export default function Home() {
+const Home = () => {
   return (
     <main className="flex min-h-screen flex-col justify-between">
       <div className="flex flex-row min-h-screen justify-center p-24">
-        <NotificationItem />
+        <PostPreview/>
+        <PostPreview/>
       </div>
     </main>
   );
-}
+};
+
+export default Home;
