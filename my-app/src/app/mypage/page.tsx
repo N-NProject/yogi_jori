@@ -3,8 +3,8 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-import Nav from "../components/navweb";
-import thumnail from "../assets/mypage/thumnail.svg";
+import Nav from "../components/NavWeb";
+import thumbnail from "../assets/mypage/thumbnail.svg";
 import location from "../assets/mypage/ion_location.svg";
 import pencil from "../assets/mypage/pencil.svg";
 
@@ -14,7 +14,7 @@ const myPage = () => {
       <Nav />
       <div className="container  bg-white  justify-center items-center">
         <div className="name flex">
-          <Image src={thumnail} alt="썸네일" />
+          <Image src={thumbnail} alt="썸네일" />
           <div className="m-[2rem]">
             <div className="flex mb-[1rem] ">
               <h1 className="nickname ">하재민</h1>
