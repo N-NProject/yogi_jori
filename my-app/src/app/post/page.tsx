@@ -39,7 +39,7 @@ const Post = () => {
           <div className="w-full flex justify-center font-semibold text-xl mr-8 ">{dummyData.title}</div>
         </div>
         {/* 주석 */}
-        <div className="flex flex-row justify-between h-[28rem] mx-20 mb-5 overflow-auto">
+        <div className="flex flex-row justify-between h-[30rem] mx-20 mb-5 overflow-auto">
           <div className="mr-10 w-[35rem]">
             <div className="mb-2">
               <p className="w-fit px-3 py-1 inline-block rounded-2xl font-semibold border-solid border-2 border-pink">모집</p>
