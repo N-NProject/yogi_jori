@@ -11,7 +11,7 @@ import mypage from "../assets/nav/mypage.svg";
 
 const navBarWeb = () => {
   return (
-    <div className="bg-white w-20 h-screen flex flex-col items-center border-solid border-r border-lightggray">
+    <div className="bg-white w-20 h-screen flex flex-col items-center border-solid border-r border-lightgray">
       <Image className="bg-white w-20 h-30" src={title} alt="title" />
 
       <div className="h-[100rem] mt-[1rem] flex flex-col justify-around">
