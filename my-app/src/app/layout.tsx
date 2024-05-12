@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../styles/globals.css";
+import NavBar from "@/app/components/navweb";
 
 
 
@@ -18,7 +19,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className="flex flex-row">
+        <NavBar />
+        <main className="w-full">{children}</main>
+      </body>
     </html>
   );
 }
