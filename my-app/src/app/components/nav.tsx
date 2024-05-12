@@ -1,0 +1,48 @@
+import Link from "next/link";
+import Image from "next/image";
+
+import main from "../assets/nav/main.svg";
+import main_hover from "../assets/nav/main_hover.svg";
+import chat from "../assets/nav/chat.svg";
+import alarm from "../assets/nav/alarm.svg";
+import write from "../assets/nav/write.svg";
+import mypage from "../assets/nav/mypage.svg";
+
+const navBar = () => {
+  return (
+    <div>
+      <div className=" w-full h-96 bg-white"></div>
+      <nav>
+        <ul className=" w-[32.25rem] h-14 bg-white flex flex-row justify-around items-center border-t">
+          <li>
+            <Link href="/">
+              <Image src={main ? main_hover : main} alt="메인게시판" />
+            </Link>
+          </li>
+          <li>
+            <Link href="/chat">
+              <Image className="" src={chat} alt="채팅" />
+            </Link>
+          </li>{" "}
+          <li>
+            <Link href="/write">
+              <Image src={write} alt="작성" />
+            </Link>
+          </li>
+          <li>
+            <Link href="/alarm">
+              <Image src={alarm} alt="알람" />
+            </Link>
+          </li>
+          <li>
+            <Link href="/mypage">
+              <Image src={mypage} alt="마이 페이지" />
+            </Link>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  );
+};
+
+export default navBar;
