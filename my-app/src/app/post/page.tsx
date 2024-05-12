@@ -18,7 +18,7 @@ const dummyData = {
 
 const Post = () => {
   return (
-    <div className="flex min-h-screen flex-col ml-24">
+    <div className="flex min-h-screen flex-col">
       <div className="relative w-full h-48">
         <Image 
           src={BackgroundImage}
