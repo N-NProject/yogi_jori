@@ -6,7 +6,7 @@ import icons_chat from "@/assets/chat/icons_chat.svg";
 import close from "@/assets/chat/close.svg";
 import back from "@/assets/chat/icons_back.svg";
 import sample from "@/assets/chat/sample.svg";
-import Nav from "../../components/navweb";
+
 
 const dummyData = {
   user_id: 1,
@@ -21,10 +21,9 @@ const dummyData = {
   updatedAt: "날짜형식",
 };
 
-const chat = () => {
+const Chat = () => {
   return (
     <div className="flex ">
-      <Nav />
       <main className="chat flex w-[90rem] min-h-screen ">
         <div className="chat_list flex flex-col w-[50rem] my-[1rem] bg-white border-r">
           <div className="flex justify-between h-[4rem] mx-[1rem] mb-[1rem] ">
@@ -75,4 +74,4 @@ const chat = () => {
   );
 };
 
-export default chat;
+export default Chat;
