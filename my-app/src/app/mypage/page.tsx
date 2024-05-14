@@ -3,10 +3,6 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-<<<<<<< HEAD
-=======
-
->>>>>>> f38cb7e6bfbdeb12907ee571b3aadd33b84d8850
 import thumbnail from "@/assets/mypage/thumbnail.svg";
 import location from "@/assets/mypage/ion_location.svg";
 import pencil from "@/assets/mypage/pencil.svg";
@@ -28,10 +24,6 @@ const dummyData = {
 const MyPage = () => {
   return (
     <main className="flex">
-<<<<<<< HEAD
-=======
- 
->>>>>>> f38cb7e6bfbdeb12907ee571b3aadd33b84d8850
       <div className="container flex flex-col max-w-full min-h-screen  items-center bg-white">
         <div className="namecontainer flex mt-[2rem] ml-[-15rem] w-[50rem]  box-border">
           <Image src={thumbnail} alt="썸네일" />

@@ -6,10 +6,6 @@ import icons_chat from "@/assets/chat/icons_chat.svg";
 import close from "@/assets/chat/close.svg";
 import back from "@/assets/chat/icons_back.svg";
 import sample from "@/assets/chat/sample.svg";
-<<<<<<< HEAD
-=======
-
->>>>>>> f38cb7e6bfbdeb12907ee571b3aadd33b84d8850
 
 const dummyData = {
   user_id: 1,
