@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import Image from "next/image";
 import StudyInCafeImage from "@/assets/previewImages/StudyInCafe.png";
 import LocationIcon from "@/assets/previewImages/LocationIcon.png";
@@ -8,7 +8,7 @@ import PersonnelIcon from "@/assets/previewImages/PersonnelIcon.png";
 const PostPreview = () => {
   return (
     <>
-      <div className="flex flex-row w-1/3 h-32 bg-white rounded-3xl p-3 border-solid border-2 mx-5">
+      <div className="flex flex-row w-[32rem] h-32 bg-white rounded-3xl p-3 border-solid border-2 mx-5">
         <Image
           src={StudyInCafeImage}
           alt="Study In Cafe Preview Image"
@@ -17,8 +17,12 @@ const PostPreview = () => {
           priority
         />
         <div className="ml-3">
-          <p className="w-fit bg-rose-100 px-2.5 py-0.5 rounded-xl text-xs mb-1.5">카공</p>
-          <p className="text-base font-semibold	mb-8">한국공학대 근처에서 카공할 사람!</p>
+          <p className="w-fit bg-rose-100 px-2.5 py-0.5 rounded-xl text-xs mb-1.5">
+            카공
+          </p>
+          <p className="text-base font-semibold	mb-8">
+            한국공학대 근처에서 카공할 사람!
+          </p>
           <div className="flex flex-row">
             <div className="flex flex-row mr-3 items-center">
               <Image
