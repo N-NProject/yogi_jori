@@ -5,8 +5,6 @@ const Home = () => {
   return (
     <main className="flex min-h-screen flex-col justify-between">
       <div className="flex flex-row min-h-screen justify-center p-24">
-        <PostPreview/>
-        <PostPreview/>
       </div>
     </main>
   );

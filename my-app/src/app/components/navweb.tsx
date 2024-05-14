@@ -15,7 +15,7 @@ const navBarWeb = () => {
       <Image className="bg-white w-20 h-30" src={title} alt="title" />
 
       <div className="h-[100rem] mt-[1rem] flex flex-col justify-around">
-        <Link href="/">
+        <Link href="/boards">
           <Image src={main ? main_hover : main} alt="메인게시판" />
         </Link>
         <Link href="/chat">
