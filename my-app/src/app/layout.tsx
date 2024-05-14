@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="flex flex-row">
-        {/* <NavBar /> */}
+        <NavBar />
         <main className="w-full">{children}</main>
       </body>
     </html>
