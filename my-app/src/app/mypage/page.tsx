@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-import NavBar from "@/components/navweb";
+
 import thumbnail from "@/assets/mypage/thumbnail.svg";
 import location from "@/assets/mypage/ion_location.svg";
 import pencil from "@/assets/mypage/pencil.svg";
@@ -25,7 +25,7 @@ const dummyData = {
 const MyPage = () => {
   return (
     <main className="flex">
-      <NavBar />
+ 
       <div className="container flex flex-col max-w-full min-h-screen  items-center bg-white">
         <div className="namecontainer flex mt-[2rem] ml-[-15rem] w-[50rem]  box-border">
           <Image src={thumbnail} alt="썸네일" />
