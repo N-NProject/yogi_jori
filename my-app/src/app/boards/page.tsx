@@ -83,38 +83,41 @@ const Boards = () => {
 
   return (
     <main className="flex min-h-screen flex-col bg-white">
-      <div className="flex px-[11rem] py-4">
+      <div className="flex justify-center lg:justify-start lg:pl-[4rem] xl:pl-[6rem] py-4 md:py-7">
         <MainTab onCategoryChange={handleCategoryChange} />
       </div>
-      <div className="flex gap-[1.25rem] px-[12rem]">
+      <div className="flex justify-center lg:justify-start gap-[0.75rem] lg:gap-[1.25rem] px-[2rem] lg:px-[6rem] xl:px-[8rem]">
         <button
           onClick={() => handleStatusChange("OPEN")}
-          className={`w-[6.25rem] h-[2.25rem] border border-1 rounded-[1.25rem] ${selectedStatus.OPEN ? "border-darkpink bg-pink" : "border-gray"}`}
+          className={`w-[5rem] lg:w-[6.25rem] h-[2rem] lg:h-[2.25rem] border border-1 rounded-[1.25rem] ${selectedStatus.OPEN ? "border-darkpink bg-pink" : "border-gray"}`}
         >
           <span className="text-xs">모집 중</span>
         </button>
         <button
           onClick={() => handleStatusChange("CLOSE")}
-          className={`w-[6.25rem] h-[2.25rem] border border-1 rounded-[1.25rem] ${selectedStatus.CLOSE ? "border-darkpink bg-pink" : "border-gray"}`}
+          className={`w-[5rem] lg:w-[6.25rem] h-[2rem] lg:h-[2.25rem] border border-1 rounded-[1.25rem] ${selectedStatus.CLOSE ? "border-darkpink bg-pink" : "border-gray"}`}
         >
           <span className="text-xs">모집 종료</span>
         </button>
       </div>
-      <div className="grid grid-cols-2 justify-center py-[1.5rem] px-[11.5rem] gap-8">
-        {filteredData.map((data) => (
-          <PostPreview
-            key={data.board_id}
-            board_id={data.board_id}
-            title={data.title}
-            tag={data.tag}
-            date={data.date}
-            time={data.time}
-            currentPerson={data.currentPerson}
-            maxPerson={data.maxPerson}
-            location={data.location}
-          />
-        ))}
+      <div className="flex justify-center">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 xl:gap-8 py-[1.5rem]">
+          {filteredData.map((data) => (
+            <PostPreview
+              key={data.board_id}
+              board_id={data.board_id}
+              title={data.title}
+              tag={data.tag}
+              date={data.date}
+              time={data.time}
+              currentPerson={data.currentPerson}
+              maxPerson={data.maxPerson}
+              location={data.location}
+            />
+          ))}
+        </div>
       </div>
+      
     </main>
   );
 };

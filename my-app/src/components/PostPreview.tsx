@@ -35,7 +35,7 @@ const PostPreview: React.FC<PostPreviewProps> = ({
 }) => {
   const tagColor = tag && tag.length > 0 ? (tagColors[tag[0]] || "bg-lightgray") : "bg-lightgray";
   return (
-    <div className="flex flex-row w-[32rem] h-32 bg-white rounded-3xl p-3 border border-1 border-lightgray">
+    <div className="flex flex-row w-[30rem] xl:w-[32rem] h-32 bg-white rounded-3xl p-3 border border-1 border-lightgray">
       <Image
         src={StudyInCafeImage}
         alt="Study In Cafe Preview Image"
