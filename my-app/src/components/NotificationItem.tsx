@@ -8,10 +8,10 @@ const NotificationItem: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col w-[37.5rem] h-[7.5rem] p-4 bg-white border border-darkgray rounded-[1.25rem] space-y-[0.25rem]">
-      <h3 className="text-xl font-semibold">{notification.title}</h3>
-      <p className="text-base font-semibold text-darkgray">{notification.content}</p>
-      <p className="text-base font-semibold text-darkgray">{notification.timestamp}</p>
+    <div className="flex flex-col w-[30rem] lg:w-[37.5rem] h-[6.5rem] lg:h-[7.5rem] p-4 bg-white border border-darkgray rounded-[1.25rem] space-y-[0.25rem]">
+      <h3 className="text-base lg:text-xl font-semibold">{notification.title}</h3>
+      <p className="text-sm lg:text-base font-semibold text-darkgray">{notification.content}</p>
+      <p className="text-sm lg:text-base font-semibold text-darkgray">{notification.timestamp}</p>
     </div>
   );
 };
