@@ -1,10 +1,9 @@
-import React from 'react';
+import React from "react";
 import Image from "next/image";
 import StudyInCafeImage from "@/assets/previewImages/StudyInCafe.png";
 import LocationIcon from "@/assets/previewImages/LocationIcon.png";
 import TimeIcon from "@/assets/previewImages/TimeIcon.png";
 import PersonnelIcon from "@/assets/previewImages/PersonnelIcon.png";
-
 interface PostPreviewProps {
   board_id: number;
   title: string;
@@ -15,14 +14,12 @@ interface PostPreviewProps {
   maxPerson: number;
   location: string;
 }
-
 const tagColors: { [key: string]: string } = {
-  "카공": "bg-blue-100",
-  "보드게임": "bg-yellow-100",
-  "커피챗": "bg-red-100",
-  "기타": "bg-lightgray",
+  카공: "bg-blue-100",
+  보드게임: "bg-yellow-100",
+  커피챗: "bg-red-100",
+  기타: "bg-lightgray",
 };
-
 const PostPreview: React.FC<PostPreviewProps> = ({
   board_id,
   title,
@@ -33,9 +30,12 @@ const PostPreview: React.FC<PostPreviewProps> = ({
   maxPerson,
   location,
 }) => {
-  const tagColor = tag && tag.length > 0 ? (tagColors[tag[0]] || "bg-lightgray") : "bg-lightgray";
+  const tagColor =
+    tag && tag.length > 0
+      ? tagColors[tag[0]] || "bg-lightgray"
+      : "bg-lightgray";
   return (
-    <div className="flex flex-row w-[32rem] h-32 bg-white rounded-3xl p-3 border border-1 border-lightgray">
+    <div className="flex flex-row w-[30rem] xl:w-[32rem] h-32 bg-white rounded-3xl p-3 border border-1 border-lightgray">
       <Image
         src={StudyInCafeImage}
         alt="Study In Cafe Preview Image"
@@ -44,7 +44,9 @@ const PostPreview: React.FC<PostPreviewProps> = ({
         priority
       />
       <div className="ml-3">
-        <p className={`w-fit ${tagColor} px-2.5 py-0.5 rounded-xl text-xs mb-1.5`}>
+        <p
+          className={`w-fit ${tagColor} px-2.5 py-0.5 rounded-xl text-xs mb-1.5`}
+        >
           {tag && tag.length > 0 ? tag[0] : "알 수 없음"}
         </p>
         <p className="text-base font-semibold mb-8">{title}</p>
@@ -84,5 +86,4 @@ const PostPreview: React.FC<PostPreviewProps> = ({
     </div>
   );
 };
-
 export default PostPreview;
