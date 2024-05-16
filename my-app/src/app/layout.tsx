@@ -22,6 +22,8 @@ export default function RootLayout({
       <body className="flex flex-row">
         <NavBar />
         <main className="w-full">{children}</main>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
+
       </body>
     </html>
   );
