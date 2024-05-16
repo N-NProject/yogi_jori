@@ -1,7 +1,6 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-
 import icons_chat from "@/assets/chat/icons_chat.svg";
 import close from "@/assets/chat/close.svg";
 import back from "@/assets/chat/icons_back.svg";

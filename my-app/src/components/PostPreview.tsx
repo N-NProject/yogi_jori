@@ -5,7 +5,35 @@ import LocationIcon from "@/assets/previewImages/LocationIcon.png";
 import TimeIcon from "@/assets/previewImages/TimeIcon.png";
 import PersonnelIcon from "@/assets/previewImages/PersonnelIcon.png";
 
-const PostPreview = () => {
+interface PostPreviewProps {
+  board_id: number;
+  title: string;
+  tag: string[];
+  date: string;
+  time: string;
+  currentPerson: number;
+  maxPerson: number;
+  location: string;
+}
+
+const tagColors: { [key: string]: string } = {
+  "카공": "bg-blue-100",
+  "보드게임": "bg-yellow-100",
+  "커피챗": "bg-red-100",
+  "기타": "bg-lightgray",
+};
+
+const PostPreview: React.FC<PostPreviewProps> = ({
+  board_id,
+  title,
+  tag,
+  date,
+  time,
+  currentPerson,
+  maxPerson,
+  location,
+}) => {
+  const tagColor = tag && tag.length > 0 ? (tagColors[tag[0]] || "bg-lightgray") : "bg-lightgray";
   return (
     <>
       <div className="flex flex-row w-[32rem] h-32 bg-white rounded-3xl p-3 border-solid border-2 mx-5">
@@ -57,7 +85,7 @@ const PostPreview = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

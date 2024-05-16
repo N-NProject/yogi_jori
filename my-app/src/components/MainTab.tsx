@@ -4,8 +4,17 @@ import { useState } from 'react';
 
 const categories = ["전체", "카공", "보드게임", "커피챗", "기타"];
 
-const MainTab = () => {
+interface MainTabProps {
+  onCategoryChange: (category: string) => void;
+}
+
+const MainTab: React.FC<MainTabProps> = ({ onCategoryChange }) => {
   const [activeTab, setActiveTab] = useState(categories[0]);
+
+  const handleTabClick = (category: string) => {
+    setActiveTab(category);
+    onCategoryChange(category);
+  };
 
   return (
     <div className="flex justify-center w-[64rem] h-[5rem] space-x-[6.75rem]">
@@ -15,7 +24,7 @@ const MainTab = () => {
           className={`px-4 py-2 w-[8.25rem] text-2xl font-semibold ${
             activeTab === category ? 'text-black' : 'text-darkgray'
           }`}
-          onClick={() => setActiveTab(category)}
+          onClick={() => handleTabClick(category)}
         >
           {category}
           {activeTab === category && (
