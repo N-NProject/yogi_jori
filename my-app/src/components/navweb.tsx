@@ -1,13 +1,14 @@
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-import title from "../assets/nav/title.svg";
-import main from "../assets/nav/main.svg";
-import main_hover from "../assets/nav/main_hover.svg";
-import chat from "../assets/nav/chat.svg";
-import alarm from "../assets/nav/alarm.svg";
-import write from "../assets/nav/write.svg";
-import mypage from "../assets/nav/mypage.svg";
+import title from "@/assets/nav/title.svg";
+import main from "@/assets/nav/main.svg";
+import main_hover from "@/assets/nav/main_hover.svg";
+import chat from "@/assets/nav/chat.svg";
+import alarm from "@/assets/nav/alarm.svg";
+import write from "@/assets/nav/write.svg";
+import mypage from "@/assets/nav/mypage.svg";
 
 const navBarWeb = () => {
   return (
@@ -15,7 +16,7 @@ const navBarWeb = () => {
       <Image className="bg-white w-20 h-30" src={title} alt="title" />
 
       <div className="h-[100rem] mt-[1rem] flex flex-col justify-around">
-        <Link href="/">
+        <Link href="/boards">
           <Image src={main ? main_hover : main} alt="메인게시판" />
         </Link>
         <Link href="/chat">

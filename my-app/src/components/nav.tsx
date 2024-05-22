@@ -1,3 +1,4 @@
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -15,7 +16,7 @@ const navBar = () => {
       <nav>
         <ul className=" w-[32.25rem] h-14 bg-white flex flex-row justify-around items-center border-t">
           <li>
-            <Link href="/">
+            <Link href="/boards">
               <Image src={main ? main_hover : main} alt="메인게시판" />
             </Link>
           </li>
