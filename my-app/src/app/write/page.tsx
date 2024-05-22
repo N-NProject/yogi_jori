@@ -34,8 +34,8 @@ const Write = () => {
             calendarClassName="bg-pink"
           />
           <div className='flex md:flex-row justify-between md:mt-0 mt-4'>
-            <input type='time' className='placeholder:text-zinc-500 border-[1.5px] border-solid border-pink outline-darkpink rounded-[3px] h-11 w-36 md:absolute right-[7rem] px-4 py-2.5 font-semibold text-sm text-zinc-500 cursor-pointer'/>
-            <div className='bg-white md:absolute border-[1.5px] border-solid border-pink rounded-[3px] h-50 right-0 z-10 max-w-[10rem] cursor-pointer'>
+            <input type='time' className='placeholder:text-zinc-500 border-[1.5px] border-solid border-pink outline-darkpink rounded-[3px] h-11 md:w-36 w-2/3 md:absolute right-[7rem] px-4 py-2.5 font-semibold text-sm text-zinc-500 cursor-pointer'/>
+            <div className='bg-white absolute border-[1.5px] border-solid border-pink rounded-[3px] h-50 right-0 z-10 max-w-[10rem] cursor-pointer'>
               <ul onClick={() => {setView(!view)}} className='overflow-auto w-24 px-4 py-2.5 font-semibold text-sm text-zinc-500'>
                 {person}{person === undefined ? '인원 선택' : "명"}
                 {/* {view ? '⌃' : '⌄'} */}
@@ -54,10 +54,10 @@ const Write = () => {
 
         </div>
         <div className="flex justify-between w-full">
-          <div className={"border-[1.5px] border-solid border-pink rounded-2xl text-center w-28 py-1.5 text-sm text-zinc-500 font-semibold cursor-pointer" + (category === "보드게임" ? ' bg-pink ' : ' bg-white')} onClick={() => setCategory("보드게임")}>보드게임</div>
-          <div className={"border-[1.5px] border-solid border-pink rounded-2xl text-center w-28 py-1.5 text-sm text-zinc-500 font-semibold cursor-pointer" + (category === "카공" ? ' bg-pink' : ' bg-white')} onClick={() => setCategory("카공")}>카공</div>
-          <div className={"border-[1.5px] border-solid border-pink rounded-2xl text-center w-28 py-1.5 text-sm text-zinc-500 font-semibold cursor-pointer" + (category === "커피챗" ? ' bg-pink' : ' bg-white')} onClick={() => setCategory("커피챗")}>커피챗</div>
-          <div className={"border-[1.5px] border-solid border-pink rounded-2xl text-center w-28 py-1.5 text-sm text-zinc-500 font-semibold cursor-pointer" + (category === "기타" ? ' bg-pink' : ' bg-white')} onClick={() => setCategory("기타")}>기타</div>
+          <div className={"border-[1.5px] border-solid border-pink rounded-2xl text-center md:w-28 w-20 py-1.5 text-sm text-zinc-500 font-semibold cursor-pointer" + (category === "보드게임" ? ' bg-pink ' : ' bg-white')} onClick={() => setCategory("보드게임")}>보드게임</div>
+          <div className={"border-[1.5px] border-solid border-pink rounded-2xl text-center md:w-28 w-20 py-1.5 text-sm text-zinc-500 font-semibold cursor-pointer" + (category === "카공" ? ' bg-pink' : ' bg-white')} onClick={() => setCategory("카공")}>카공</div>
+          <div className={"border-[1.5px] border-solid border-pink rounded-2xl text-center md:w-28 w-20 py-1.5 text-sm text-zinc-500 font-semibold cursor-pointer" + (category === "커피챗" ? ' bg-pink' : ' bg-white')} onClick={() => setCategory("커피챗")}>커피챗</div>
+          <div className={"border-[1.5px] border-solid border-pink rounded-2xl text-center md:w-28 w-20 py-1.5 text-sm text-zinc-500 font-semibold cursor-pointer" + (category === "기타" ? ' bg-pink' : ' bg-white')} onClick={() => setCategory("기타")}>기타</div>
         </div>
         <input type="text" name="location" placeholder="만날 장소를 입력해주세요." className="placeholder:text-zinc-500 border-[1.5px] border-solid border-pink outline-darkpink rounded-[3px] h-11 w-full px-4 py-2.5 font-semibold text-sm"/>
         <textarea name="description" placeholder="상세 내용을 입력해주세요." rows="12" className="placeholder:text-zinc-500 border-[1.5px] border-solid border-pink outline-darkpink rounded-[3px] h-70 w-full px-4 py-2.5 font-semibold text-sm"/>
