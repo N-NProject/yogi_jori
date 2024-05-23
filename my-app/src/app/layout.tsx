@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../styles/globals.css";
-import NavBar from "@/components/NavWeb";
+import WebNavBar from "@/components/navweb";
+import MobileNavBar from "@/components/nav";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,9 +18,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="flex flex-row">
-        <NavBar />
-        <main className="w-full">{children}</main>
+      <body className="flex md:flex-row flex-col">
+        <div className="h-1/6">
+          <WebNavBar />
+        </div>
+        <main className="w-full h-4/6">{children}</main>
+        <div className="h-1/6">
+          <MobileNavBar  />
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
+
       </body>
     </html>
   );

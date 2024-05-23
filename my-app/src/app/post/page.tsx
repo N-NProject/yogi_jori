@@ -18,7 +18,7 @@ const dummyData = {
 
 const Post = () => {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex h-full flex-col">
       <div className="relative w-full h-48">
         <Image 
           src={BackgroundImage}
@@ -27,20 +27,23 @@ const Post = () => {
           priority
         />
       </div>
-      <div className=" rounded-t-[4rem] bg-white relative bottom-14 ">
-        <div className="w-1/4 h-20 bg-lightpink flex items-center rounded-3xl px-6 ml-20 drop-shadow-md relative bottom-10 ">
-          <Image
-            src={MegaphoneImage}
-            alt="Background Image"
-            width={45}
-            height={45}
-            priority
-          />
-          <div className="w-full flex justify-center font-semibold text-xl mr-8 ">{dummyData.title}</div>
+      <div className="place-items-center rounded-t-[4rem] bg-white relative bottom-14 ">
+        <div className="md:flex-none flex md:justify-normal justify-center md:items-start items-center">
+          <div className="w-80 h-20 bg-lightpink flex items-center rounded-3xl px-6 md:ml-20 drop-shadow-md relative bottom-10 ">
+            <Image
+              src={MegaphoneImage}
+              alt="Background Image"
+              width={45}
+              height={45}
+              priority
+            />
+            <div className="w-full flex justify-center font-semibold text-xl mr-8 ">{dummyData.title}</div>
+          </div>
         </div>
+        
         {/* 주석 */}
-        <div className="flex flex-row justify-between h-[30rem] mx-20 mb-5 overflow-auto">
-          <div className="mr-10 w-[35rem]">
+        <div className="flex md:flex-row flex-col justify-between md:h-[30rem] h-[25rem] md:mx-20 mx-10 mb-5 overflow-auto">
+          <div className="md:mr-10 md:w-[35rem]">
             <div className="mb-2">
               <p className="w-fit px-3 py-1 inline-block rounded-2xl font-semibold border-solid border-2 border-pink">모집</p>
               <p className="inline-block ml-3 text-lg">곽소정</p>
@@ -63,7 +66,7 @@ const Post = () => {
               <p className="ml-3 text-lg">{dummyData.description}</p>
             </div>
           </div>
-          <div className="w-[35rem]">
+          <div className="md:w-[35rem]">
             <p className="w-fit px-3 py-1 mb-2 rounded-2xl font-semibold border-solid border-2 border-pink">위치</p>
           </div>
         </div>

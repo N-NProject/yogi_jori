@@ -12,9 +12,9 @@ import mypage from "../assets/nav/mypage.svg";
 const navBar = () => {
   return (
     <div>
-      <div className=" w-full h-96 bg-white"></div>
+      <div className=" w-full bg-white"></div>
       <nav>
-        <ul className=" w-[32.25rem] h-14 bg-white flex flex-row justify-around items-center border-t">
+        <ul className=" w-[32.25rem] h-14 bg-white md:hidden flex flex-row justify-around items-center border-t">
           <li>
             <Link href="/boards">
               <Image src={main ? main_hover : main} alt="메인게시판" />
