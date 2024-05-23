@@ -19,9 +19,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="flex md:flex-row flex-col">
-        <WebNavBar />
-        <main className="w-full">{children}</main>
-        <MobileNavBar  />
+        <div className="h-1/6">
+          <WebNavBar />
+        </div>
+        <main className="w-full h-4/6">{children}</main>
+        <div className="h-1/6">
+          <MobileNavBar  />
+        </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
 
       </body>
