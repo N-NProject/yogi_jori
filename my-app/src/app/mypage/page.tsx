@@ -7,6 +7,7 @@ import thumbnail from "@/assets/mypage/thumbnail.svg";
 import location from "@/assets/mypage/ion_location.svg";
 import pencil from "@/assets/mypage/pencil.svg";
 import PostPreview from "@/components/PostPreview";
+import WebNavBar from "@/components/navweb";
 
 const dummyData = {
   user_id: 1,
@@ -25,7 +26,7 @@ const MyPage = () => {
   return (
     <main className="flex">
       <div className="container flex flex-col max-w-full min-h-screen  items-center bg-white">
-        <div className="namecontainer flex mt-[2rem] ml-[-15rem] w-[50rem]  box-border">
+        <div className="namecontainer flex   box-border w-[30rem] mt-[2rem] xl:w-[50rem]  xl:ml-[-15rem]  lg:w-[45rem] lg:ml-0  md:w-[40rem] md:ml-0 ">
           <Image src={thumbnail} alt="썸네일" />
           <div className="m-[2rem]">
             <div className="flex mb-[1rem] ">
@@ -47,9 +48,9 @@ const MyPage = () => {
           </div>
         </div>
 
-        <div className="line w-[70rem] border-[0.01rem] border-lightgray mt-[1.5rem] mb-[1rem] "></div>
+        <div className="line  border-lightgray border-[0.01rem] mt-[1.5rem] mb-[1rem] w-[30rem] xl:w-[70rem] lg:w-[50rem] md:w-[40rem]  "></div>
 
-        <div className=" mx-[9rem] flex  flex-col w-[67.75rem]">
+        <div className=" flex  flex-col mx-[9rem] w-[30rem] h-full xl:w-[67.75rem] lg:w-[50rem] md:w-[40rem]">
           <h1 className=" mb-[2rem] text-[20px]">작성한 게시글</h1>
           <div className="write_post overflow-y-hidden">
             <div className="flex mb-3">
@@ -62,17 +63,15 @@ const MyPage = () => {
             </div>
           </div>
 
-          <div className="enter_post text-[20px] w-[67.75rem]">
-            <h1 className="mt-[2rem] mb-[2rem] text-[20px]  ">참여한 게시글</h1>
-            <div className="write_post  flex flex-col justify-center   overflow-y-hidden">
-              <div className="flex mb-3">
-                <PostPreview></PostPreview>
-                <PostPreview></PostPreview>
-              </div>
-              <div className="flex ">
-                <PostPreview></PostPreview>
-                <PostPreview></PostPreview>
-              </div>
+          <h1 className=" mt-[2rem] mb-[2rem] text-[20px]  ">참여한 게시글</h1>
+          <div className="write_post  flex flex-col justify-center   overflow-y-hidden">
+            <div className="flex mb-3">
+              <PostPreview></PostPreview>
+              <PostPreview></PostPreview>
+            </div>
+            <div className="flex ">
+              <PostPreview></PostPreview>
+              <PostPreview></PostPreview>
             </div>
           </div>
         </div>
