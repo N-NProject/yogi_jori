@@ -45,9 +45,8 @@ const Chat = () => {
           </ul>
         </div>
 
-        <div className="chat_room w-full min-h-screen flex flex-col bg-blue-400  ">
+        <div className="chat_room w-full min-h-screen flex flex-col">
           <div className="flex justify-between h-[4rem] m-[1rem] px-[1rem] ">
-            kd d l;akdasl kas'lk
             <div className="flex items-center">
               <Image src={icons_chat} alt="채팅 아이콘"></Image>
               <h1 className="text-[1.5rem] font-semibold ml-[0.5rem]">
