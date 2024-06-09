@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import BackgroundImage from "@/assets/post/background.png";
 import MegaphoneImage from "@/assets/post/megaphone.png";
@@ -14,9 +14,65 @@ const dummyData = {
   "maxPerson": 100,
   "status": "OPEN",
   "updatedAt" : "날짜형식",
-}
+  "location": {
+    "latitude": 37.557434302,
+    "longitude": 126.926960224
+  },
+  "location_name": "홍대입구역"
+};
+
+declare global {
+  interface Window {
+    kakao: any;
+  }
+};
 
 const Post = () => {
+  const [locationAddress, setLocationAddress] = useState<String>("");
+
+  useEffect(() => {
+    // 카카오맵 api를 사용하기 위해 Head 부분에 script 태그 추가하기
+    const kakaoMapScript = document.createElement('script');
+    kakaoMapScript.async = false;
+    kakaoMapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=4b5f228cb3b8bf6903521cc0f6f67769&autoload=false&libraries=services`;
+    document.head.appendChild(kakaoMapScript);
+  
+    const onLoadKakaoAPI = () => {
+      window.kakao.maps.load(() => {
+        const position = new window.kakao.maps.LatLng(dummyData.location.latitude, dummyData.location.longitude); // 지도에 표시할 위치
+
+        var container = document.getElementById('map'); // 지도를 표시할 div
+        var options = {
+          center: position, // 지도의 중심좌표
+          level: 3, // 지도의 확대 레벨
+        };
+  
+        // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+        var map = new window.kakao.maps.Map(container, options);
+
+        // 주소-좌표 변환 객체를 생성합니다
+        var geocoder = new window.kakao.maps.services.Geocoder();
+
+        // 좌표로 법정동 상세 주소 정보를 요청합니다
+        geocoder.coord2Address(dummyData.location.longitude, dummyData.location.latitude, function(result, status) {
+          if (status === window.kakao.maps.services.Status.OK) {
+            setLocationAddress(result[0].address.address_name);
+          }
+      });
+        
+        // 마커를 생성합니다
+        var marker = new window.kakao.maps.Marker({
+            position: position
+        });
+
+        // 마커가 지도 위에 표시되도록 설정합니다
+        marker.setMap(map);
+      });
+    };
+  
+    kakaoMapScript.addEventListener('load', onLoadKakaoAPI);
+  }, []);
+
   return (
     <div className="flex h-full flex-col">
       <div className="relative w-full h-48">
@@ -58,7 +114,7 @@ const Post = () => {
             </div>
             <div className="mb-5">
               <p className="w-fit px-3 py-1 inline-block rounded-2xl font-semibold border-solid border-2 border-pink">장소</p>
-              <p className="inline-block ml-3 text-lg">홍대입구역</p>
+              <p className="inline-block ml-3 text-lg">{dummyData.location_name}</p>
             </div>
             <hr  className="mb-5 border-lightgray" />
             <div className="mb-2">
@@ -67,7 +123,10 @@ const Post = () => {
             </div>
           </div>
           <div className="md:w-[35rem]">
-            <p className="w-fit px-3 py-1 mb-2 rounded-2xl font-semibold border-solid border-2 border-pink">위치</p>
+            <p className="w-fit px-3 py-1 inline-block mb-2 rounded-2xl font-semibold border-solid border-2 border-pink">위치</p>
+            <p className="inline-block ml-3 text-lg">{locationAddress}</p>
+            <div id="map" className="w-[35rem] h-[400px]"></div>
+        
           </div>
         </div>
         <div className="flex items-center justify-center min-h-24">
