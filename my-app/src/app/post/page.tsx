@@ -93,7 +93,7 @@ const Post = () => {
             </div>
           </div>
         </div>
-        <div className="flex md:flex-row flex-col justify-between md:h-[30rem] h-[25rem] md:mx-20 mx-10 mb-5 overflow-auto">
+        <div className="flex md:flex-row flex-col justify-between md:h-[30rem] h-[32rem] md:mx-20 mx-10 mb-5 overflow-auto">
           <div className="md:mr-10 md:w-[35rem]">
             <div className="mb-2">
               <p className="w-fit px-3 py-1 inline-block rounded-2xl font-semibold border-solid border-2 border-pink">
