@@ -22,8 +22,8 @@ const dummyData = {
 const Chat = () => {
   return (
     <div className="flex ">
-      <main className="chat flex w-[90rem] min-h-screen ">
-        <div className="chat_list flex flex-col w-[50rem] my-[1rem] bg-white border-r">
+      <main className="chat flex w-[100%] min-h-screen  ">
+        <div className="chat_list flex flex-col  my-[1rem] bg-white xl:border-r  xl:w-[50rem] lg:w-[40rem] lg:border-r md:w-[30rem] md:border-r w-0">
           <div className="flex justify-between h-[4rem] mx-[1rem] mb-[1rem] ">
             <div className="flex items-center">
               <Image src={icons_chat} alt="채팅 아이콘"></Image>
@@ -40,12 +40,12 @@ const Chat = () => {
               <Image className="mb-[1rem]" src={sample} alt="1" />
             </li>
             <li>
-              <Image className="]" src={sample} alt="1" />
+              <Image className="" src={sample} alt="1" />
             </li>
           </ul>
         </div>
 
-        <div className="chat_room w-full min-h-screen flex flex-col bg-white  ">
+        <div className="chat_room w-full min-h-screen flex flex-col">
           <div className="flex justify-between h-[4rem] m-[1rem] px-[1rem] ">
             <div className="flex items-center">
               <Image src={icons_chat} alt="채팅 아이콘"></Image>
@@ -54,7 +54,7 @@ const Chat = () => {
               </h1>
             </div>
             <button>
-              <Image src={back} alt="접기"></Image>
+              <Image src={back} alt="뒤로"></Image>
             </button>
           </div>
           <div className="flex-grow p-4"></div>
