@@ -76,12 +76,7 @@ const Post = () => {
   return (
     <div className="flex h-full max-w-full flex-col">
       <div className="relative w-full h-48">
-        <Image 
-          src={BackgroundImage}
-          alt="Background Image"
-          fill
-          priority
-        />
+        <Image src={BackgroundImage} alt="Background Image" fill priority />
       </div>
       <div className="place-items-center rounded-t-[4rem] bg-white relative bottom-14 ">
         <div className="md:flex-none flex md:justify-normal justify-center md:items-start items-center">
@@ -93,22 +88,32 @@ const Post = () => {
               height={45}
               priority
             />
-            <div className="w-full flex justify-center font-semibold text-xl mr-8 ">{dummyData.title}</div>
+            <div className="w-full flex justify-center font-semibold text-xl mr-8 ">
+              {dummyData.title}
+            </div>
           </div>
         </div>
         <div className="flex md:flex-row flex-col justify-between md:h-[30rem] h-[25rem] md:mx-20 mx-10 mb-5 overflow-auto">
           <div className="md:mr-10 md:w-[35rem]">
             <div className="mb-2">
-              <p className="w-fit px-3 py-1 inline-block rounded-2xl font-semibold border-solid border-2 border-pink">모집</p>
+              <p className="w-fit px-3 py-1 inline-block rounded-2xl font-semibold border-solid border-2 border-pink">
+                모집
+              </p>
               <p className="inline-block ml-3 text-lg">곽소정</p>
             </div>
             <div className="mb-2">
-              <p className="w-fit px-3 py-1 inline-block rounded-2xl font-semibold border-solid border-2 border-pink">날짜</p>
+              <p className="w-fit px-3 py-1 inline-block rounded-2xl font-semibold border-solid border-2 border-pink">
+                날짜
+              </p>
               <p className="inline-block ml-3 text-lg">{dummyData.date}</p>
             </div>
             <div className="mb-2">
-              <p className="w-fit px-3 py-1 inline-block rounded-2xl font-semibold border-solid border-2 border-pink">인원</p>
-              <p className="inline-block ml-3 text-lg">{dummyData.currentPerson} / {dummyData.maxPerson}</p>
+              <p className="w-fit px-3 py-1 inline-block rounded-2xl font-semibold border-solid border-2 border-pink">
+                인원
+              </p>
+              <p className="inline-block ml-3 text-lg">
+                {dummyData.currentPerson} / {dummyData.maxPerson}
+              </p>
             </div>
             <div className="mb-5">
               <p className="w-fit px-3 py-1 inline-block rounded-2xl font-semibold border-solid border-2 border-pink">장소</p>

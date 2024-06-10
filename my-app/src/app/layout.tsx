@@ -24,10 +24,9 @@ export default function RootLayout({
         </div>
         <main className="w-full h-4/6">{children}</main>
         <div className="h-1/6">
-          <MobileNavBar  />
+          <MobileNavBar />
         </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
-
       </body>
     </html>
   );
