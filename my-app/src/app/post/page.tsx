@@ -41,17 +41,25 @@ const Post = () => {
       window.kakao.maps.load(() => {
         const position = new window.kakao.maps.LatLng(dummyData.location.latitude, dummyData.location.longitude); // 지도에 표시할 위치
 
-        var container = document.getElementById('map'); // 지도를 표시할 div
-        var options = {
-          center: position, // 지도의 중심좌표
-          level: 3, // 지도의 확대 레벨
+        // 이미지 지도에 표시할 마커입니다
+        // 이미지 지도에 표시할 마커는 Object 형태입니다
+        const marker = {
+          position: position
         };
-  
-        // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
-        var map = new window.kakao.maps.Map(container, options);
 
+        // 이미지 지도를 표시할 div
+        const staticMapContainer  = document.getElementById('staticMap'),  
+          staticMapOption = { 
+              center: position, // 이미지 지도의 중심좌표
+              level: 3, // 이미지 지도의 확대 레벨
+              marker: marker
+          };
+
+        // 이미지 지도를 표시할 div와 옵션으로 이미지 지도를 생성합니다
+        const staticMap = new window.kakao.maps.StaticMap(staticMapContainer, staticMapOption);
+        
         // 주소-좌표 변환 객체를 생성합니다
-        var geocoder = new window.kakao.maps.services.Geocoder();
+        const geocoder = new window.kakao.maps.services.Geocoder();
 
         // 좌표로 법정동 상세 주소 정보를 요청합니다
         geocoder.coord2Address(dummyData.location.longitude, dummyData.location.latitude, function(result, status) {
@@ -59,14 +67,6 @@ const Post = () => {
             setLocationAddress(result[0].address.address_name);
           }
       });
-        
-        // 마커를 생성합니다
-        var marker = new window.kakao.maps.Marker({
-            position: position
-        });
-
-        // 마커가 지도 위에 표시되도록 설정합니다
-        marker.setMap(map);
       });
     };
   
@@ -74,7 +74,7 @@ const Post = () => {
   }, []);
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full max-w-full flex-col">
       <div className="relative w-full h-48">
         <Image 
           src={BackgroundImage}
@@ -96,8 +96,6 @@ const Post = () => {
             <div className="w-full flex justify-center font-semibold text-xl mr-8 ">{dummyData.title}</div>
           </div>
         </div>
-        
-        {/* 주석 */}
         <div className="flex md:flex-row flex-col justify-between md:h-[30rem] h-[25rem] md:mx-20 mx-10 mb-5 overflow-auto">
           <div className="md:mr-10 md:w-[35rem]">
             <div className="mb-2">
@@ -117,7 +115,7 @@ const Post = () => {
               <p className="inline-block ml-3 text-lg">{dummyData.location_name}</p>
             </div>
             <hr  className="mb-5 border-lightgray" />
-            <div className="mb-2">
+            <div className="md:mb-2 mb-10">
               <p className="w-fit px-3 py-1 mb-2 rounded-2xl font-semibold border-solid border-2 border-pink">상세내용</p>
               <p className="ml-3 text-lg">{dummyData.description}</p>
             </div>
@@ -125,11 +123,11 @@ const Post = () => {
           <div className="md:w-[35rem]">
             <p className="w-fit px-3 py-1 inline-block mb-2 rounded-2xl font-semibold border-solid border-2 border-pink">위치</p>
             <p className="inline-block ml-3 text-lg">{locationAddress}</p>
-            <div id="map" className="w-[35rem] h-[400px]"></div>
+            <div id="staticMap" className="2xl:h-[25rem] xl:h-[23rem] l:h-[21rem] md:h-[19rem] sm:h-[17rem] h-[15rem]"></div>
         
           </div>
         </div>
-        <div className="flex items-center justify-center min-h-24">
+        <div className="flex items-center justify-center md:min-h-24 min-h-12">
           <button className="h-fit bg-darkpink text-lg font-semibold text-white rounded-lg py-2 px-20 cursor-pointer">지금 당장 참여하기 ({dummyData.currentPerson}/{dummyData.maxPerson})</button>
         </div>
       </div>
