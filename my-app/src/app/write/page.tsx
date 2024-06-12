@@ -20,6 +20,8 @@ const Write = () => {
   const [category, setCategory] = useState<String>();
   const personItems = Array.from({ length: 15 }, (_, index) => index + 1);
   const [value, onChange] = useState('10:00');  
+  const [lat, setLat] = useState<number>(0);
+  const [lng, setLng] = useState<number>(0);
 
   useEffect(() => {
     // 카카오맵 api를 사용하기 위해 Head 부분에 script 태그 추가하기
@@ -54,6 +56,16 @@ const Write = () => {
           });
         });
 
+        // 자식 노드를 모두 삭제하는 함수
+        function removeAllResultItems(parent, child) {
+          if (resultList) {
+              const resultItems = parent.getElementsByClassName(child);
+              while (resultItems.length > 0) {
+                resultItems[0].remove();
+              }
+          }
+      }
+
         // 장소 검색 결과를 리스트로 표시하는 함수
         function displayPlaces(places: any[]) {
           resultList.innerHTML = '';
@@ -74,12 +86,19 @@ const Write = () => {
             listItem.appendChild(placeAddress);
 
             listItem.onclick = function() {
-                console.log(place)
-                alert(`장소 이름: ${place.place_name}\n주소: ${place.address_name}`);
+              resultList.classList.remove('h-[30rem]','bg-white', 'border', 'border-[1px]', 'rounded-[3px]', 'border-zinc-300');
+              
+              keywordInput.value = place.place_name;
+              
+              setLng(place.x);
+              setLat(place.y);
+              
+              removeAllResultItems(resultList, 'result-item');
             };
+
             resultList.appendChild(listItem);
           });
-          resultList.classList.add('bg-white', 'border', 'border-[1px]', 'rounded-[3px]', 'border-zinc-300');
+          resultList.classList.add('h-[30rem]', 'bg-white', 'border', 'border-[1px]', 'rounded-[3px]', 'border-zinc-300');
         };
       });
     };
@@ -91,7 +110,7 @@ const Write = () => {
     <div className="flex flex-col h-full items-center justify-center">
       <h1 className="text-darkpink font-semibold text-2xl">모집하기</h1>
       <div className="flex flex-col items-center md:w-[30rem] w-[22rem] space-y-4 my-10">
-        <input type="text" name="title" placeholder="제목을 입력해주세요." className="placeholder:text-zinc-500 border-[1.5px] border-solid border-pink outline-darkpink rounded-[3px] h-11 w-full px-4 py-2.5 font-semibold text-sm"/>
+        <input type="text" name="title" placeholder="제목을 입력해주세요." className="placeholder:text-zinc-500 text-slate-800 border-[1.5px] border-solid border-pink outline-darkpink rounded-[3px] h-11 w-full px-4 py-2.5 font-semibold text-sm"/>
         <div className="flex md:flex-row flex-col justify-between w-full relative">
           <DatePicker
             showTimeInput
@@ -106,7 +125,7 @@ const Write = () => {
             calendarClassName="bg-pink"
           />
           <div className='flex md:flex-row justify-between md:mt-0 mt-4'>
-            <input type='time' className='placeholder:text-zinc-500 border-[1.5px] border-solid border-pink outline-darkpink rounded-[3px] h-11 md:w-36 w-2/3 md:absolute right-[7rem] px-4 py-2.5 font-semibold text-sm text-zinc-500 cursor-pointer'/>
+            <input type='time' className='placeholder:text-zinc-500 text-slate-800 border-[1.5px] border-solid border-pink outline-darkpink rounded-[3px] h-11 md:w-36 w-2/3 md:absolute right-[7rem] px-4 py-2.5 font-semibold text-sm text-zinc-500 cursor-pointer'/>
             <div className='bg-white absolute border-[1.5px] border-solid border-pink rounded-[3px] h-50 right-0 z-10 max-w-[10rem] cursor-pointer'>
               <ul onClick={() => {setView(!view)}} className='overflow-auto w-24 px-4 py-2.5 font-semibold text-sm text-zinc-500'>
                 {person}{person === undefined ? '인원 선택' : "명"}
@@ -132,10 +151,11 @@ const Write = () => {
           <div className={"border-[1.5px] border-solid border-pink rounded-2xl text-center md:w-28 w-20 py-1.5 text-sm text-zinc-500 font-semibold cursor-pointer" + (category === "기타" ? ' bg-pink' : ' bg-white')} onClick={() => setCategory("기타")}>기타</div>
         </div>
         <div className="relative md:w-[30rem] w-[22rem]">
-          <input type="text" name="location" id="location" placeholder="만날 장소를 입력해주세요." className="placeholder:text-zinc-500 border-[1.5px] border-solid border-pink outline-darkpink rounded-[3px] h-11 w-full px-4 py-2.5 font-semibold text-sm"/>
-          <div id="result-list" className="absolute top-full z-[1000] w-full h-[30rem] px-4 overflow-auto"></div>
+          <input type="text" name="location" id="location" placeholder="만날 장소를 입력해주세요." className="placeholder:text-zinc-500 text-slate-800 border-[1.5px] border-solid border-pink outline-darkpink rounded-[3px] h-11 w-full px-4 py-2.5 font-semibold text-sm"/>
+          <div id="result-list" className="absolute top-full z-[1000] w-full px-4 overflow-auto"></div>
         </div>
-        <textarea name="description" placeholder="상세 내용을 입력해주세요." rows="12" className="placeholder:text-zinc-500 border-[1.5px] border-solid border-pink outline-darkpink rounded-[3px] h-70 w-full px-4 py-2.5 font-semibold text-sm"></textarea>
+        <textarea name="description" placeholder="상세 내용을 입력해주세요." rows="12" className="placeholder:text-zinc-500 text-slate-800 border-[1.5px] border-solid border-pink outline-darkpink rounded-[3px] h-70 w-full px-4 py-2.5 font-semibold text-sm"></textarea>
+
       </div>
       <Link href="/post">
         <button className="md:w-[30rem] w-[22rem] h-fit bg-darkpink text-md font-semibold text-white rounded-lg py-2 px-20 cursor-pointer">완료</button>  
