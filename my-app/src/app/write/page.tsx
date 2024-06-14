@@ -44,6 +44,7 @@ const Write = () => {
 
           if (!keyword.trim()) {
             resultList.innerHTML = '';
+            resultList.classList.remove('h-18rem]','bg-white', 'border', 'border-[1px]', 'rounded-[3px]', 'border-zinc-300');
             return;
           }
 
@@ -51,7 +52,8 @@ const Write = () => {
             if (status === window.kakao.maps.services.Status.OK) {
               displayPlaces(data);
             } else {
-              resultList.innerHTML = '<div class="result-item">검색 결과가 없습니다.</div>';
+              resultList.innerHTML = '<div class="result-item mt-2">검색 결과가 없습니다.</div>';
+              resultList.classList.add('h-[18rem]', 'bg-white', 'border', 'border-[1px]', 'rounded-[3px]', 'border-zinc-300');
             }
           });
         });
@@ -86,7 +88,7 @@ const Write = () => {
             listItem.appendChild(placeAddress);
 
             listItem.onclick = function() {
-              resultList.classList.remove('h-[30rem]','bg-white', 'border', 'border-[1px]', 'rounded-[3px]', 'border-zinc-300');
+              resultList.classList.remove('h-18rem]','bg-white', 'border', 'border-[1px]', 'rounded-[3px]', 'border-zinc-300');
               
               keywordInput.value = place.place_name;
               
@@ -98,7 +100,7 @@ const Write = () => {
 
             resultList.appendChild(listItem);
           });
-          resultList.classList.add('h-[30rem]', 'bg-white', 'border', 'border-[1px]', 'rounded-[3px]', 'border-zinc-300');
+          resultList.classList.add('h-[18rem]', 'bg-white', 'border', 'border-[1px]', 'rounded-[3px]', 'border-zinc-300');
         };
       });
     };
@@ -107,7 +109,7 @@ const Write = () => {
   }, []);
 
   return (
-    <div className="flex flex-col h-full items-center justify-center">
+    <div className="flex flex-col h-screen items-center justify-center">
       <h1 className="text-darkpink font-semibold text-2xl">모집하기</h1>
       <div className="flex flex-col items-center md:w-[30rem] w-[22rem] space-y-4 my-10">
         <input type="text" name="title" placeholder="제목을 입력해주세요." className="placeholder:text-zinc-500 text-slate-800 border-[1.5px] border-solid border-pink outline-darkpink rounded-[3px] h-11 w-full px-4 py-2.5 font-semibold text-sm"/>
