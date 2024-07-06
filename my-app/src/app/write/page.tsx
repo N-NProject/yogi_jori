@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import token from "@/constants/loginToken";
 
 declare global {
   interface Window {
@@ -38,7 +39,7 @@ const Write = () => {
     mutationFn: async (newPost) => {
       const res = await axios.post('http://localhost:8000/api/v1/boards', newPost, {
         headers: {
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcyMDI3NjEzNywiZXhwIjoxNzIwMjc5NzM3fQ.5-aUhnF9XsEsR8ZQybf_S8hn1OF66kzWJAAcI6Td654`,
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       });

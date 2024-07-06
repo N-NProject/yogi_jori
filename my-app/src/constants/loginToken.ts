@@ -1,0 +1,3 @@
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcyMDI4MDAxNywiZXhwIjoxNzIwMjgzNjE3fQ.r_1Xm5Ef6XGYHwk3lNeKiPupEaSEPTq4QbOOXeIvs9E";
+
+export default token;

@@ -1,9 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
 import Image from "next/image";
 import BackgroundImage from "@/assets/post/background.png";
 import MegaphoneImage from "@/assets/post/megaphone.png";
+import token from "@/constants/loginToken";
 
 const dummyData = {
   "user_id" : 1,
@@ -29,8 +32,29 @@ declare global {
 
 const Post = ({ params }: { params: { slug: number } }) => {
   const [locationAddress, setLocationAddress] = useState<String>("");
+  const [postData, setPostData] = useState<Object>({});
 
-  useEffect(() => {
+  const mutation = useMutation({
+    mutationFn: async (id) => {
+      const res = await axios.get(`http://localhost:8000/api/v1/boards/${id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      return res.data;
+    },
+    onSuccess: (data) => {
+      setPostData(data);
+      loadKakaoMap(data.location.latitude, data.location.longitude);
+    },
+    onError: (error) => {
+      console.log(error.message);
+    },
+  });
+
+  const loadKakaoMap = (latitude, longitude) => {
     // 카카오맵 api를 사용하기 위해 Head 부분에 script 태그 추가하기
     const kakaoMapScript = document.createElement('script');
     kakaoMapScript.async = false;
@@ -39,7 +63,7 @@ const Post = ({ params }: { params: { slug: number } }) => {
   
     const onLoadKakaoAPI = () => {
       window.kakao.maps.load(() => {
-        const position = new window.kakao.maps.LatLng(dummyData.location.latitude, dummyData.location.longitude); // 지도에 표시할 위치
+        const position = new window.kakao.maps.LatLng(latitude, longitude); // 지도에 표시할 위치
 
         // 이미지 지도에 표시할 마커입니다
         // 이미지 지도에 표시할 마커는 Object 형태입니다
@@ -60,9 +84,10 @@ const Post = ({ params }: { params: { slug: number } }) => {
         
         // 주소-좌표 변환 객체를 생성합니다
         const geocoder = new window.kakao.maps.services.Geocoder();
-
+        console.log(postData.location?.longitude)
+        console.log(postData.location?.latitude)
         // 좌표로 법정동 상세 주소 정보를 요청합니다
-        geocoder.coord2Address(dummyData.location.longitude, dummyData.location.latitude, function(result, status) {
+        geocoder.coord2Address(longitude, latitude, function(result, status) {
           if (status === window.kakao.maps.services.Status.OK) {
             setLocationAddress(result[0].address.address_name);
           }
@@ -71,6 +96,10 @@ const Post = ({ params }: { params: { slug: number } }) => {
     };
   
     kakaoMapScript.addEventListener('load', onLoadKakaoAPI);
+  };
+
+  useEffect(() => {
+    mutation.mutate(params.slug);
   }, []);
 
   return (
@@ -89,7 +118,7 @@ const Post = ({ params }: { params: { slug: number } }) => {
               priority
             />
             <div className="w-full flex justify-center font-semibold text-xl mr-8 ">
-              {dummyData.title}
+              {postData.title}
             </div>
           </div>
         </div>
@@ -99,30 +128,30 @@ const Post = ({ params }: { params: { slug: number } }) => {
               <p className="w-fit px-3 py-1 inline-block rounded-2xl font-semibold border-solid border-2 border-pink">
                 모집
               </p>
-              <p className="inline-block ml-3 text-lg">곽소정</p>
+              <p className="inline-block ml-3 text-lg">{postData.user?.username}</p>
             </div>
             <div className="mb-2">
               <p className="w-fit px-3 py-1 inline-block rounded-2xl font-semibold border-solid border-2 border-pink">
                 날짜
               </p>
-              <p className="inline-block ml-3 text-lg">{dummyData.date}</p>
+              <p className="inline-block ml-3 text-lg">{postData.date} {postData.startTime}</p>
             </div>
             <div className="mb-2">
               <p className="w-fit px-3 py-1 inline-block rounded-2xl font-semibold border-solid border-2 border-pink">
                 인원
               </p>
               <p className="inline-block ml-3 text-lg">
-                {dummyData.currentPerson} / {dummyData.maxPerson}
+                {postData.currentPerson} / {postData.maxCapacity}
               </p>
             </div>
             <div className="mb-5">
               <p className="w-fit px-3 py-1 inline-block rounded-2xl font-semibold border-solid border-2 border-pink">장소</p>
-              <p className="inline-block ml-3 text-lg">{dummyData.location_name}</p>
+              <p className="inline-block ml-3 text-lg">{postData.location?.locationName}</p>
             </div>
             <hr  className="mb-5 border-lightgray" />
             <div className="md:mb-2 mb-10">
               <p className="w-fit px-3 py-1 mb-2 rounded-2xl font-semibold border-solid border-2 border-pink">상세내용</p>
-              <p className="ml-3 text-lg">{dummyData.description}</p>
+              <p className="ml-3 text-lg">{postData.description}</p>
             </div>
           </div>
           <div className="md:w-[35rem]">
@@ -133,7 +162,7 @@ const Post = ({ params }: { params: { slug: number } }) => {
           </div>
         </div>
         <div className="flex items-center justify-center md:min-h-24 min-h-12">
-          <button className="h-fit bg-darkpink text-lg font-semibold text-white rounded-lg py-2 px-20 cursor-pointer">지금 당장 참여하기 ({dummyData.currentPerson}/{dummyData.maxPerson})</button>
+          <button className="h-fit bg-darkpink text-lg font-semibold text-white rounded-lg py-2 px-20 cursor-pointer">지금 당장 참여하기 ({postData.currentPerson}/{postData.maxCapacity})</button>
         </div>
       </div>
     </div>
