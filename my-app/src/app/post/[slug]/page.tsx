@@ -27,7 +27,7 @@ declare global {
   }
 };
 
-const Post = () => {
+const Post = ({ params }: { params: { slug: number } }) => {
   const [locationAddress, setLocationAddress] = useState<String>("");
 
   useEffect(() => {

@@ -1,8 +1,9 @@
 "use client";
+
 import { useState, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import axios from 'axios';
-import Link from 'next/link';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -22,6 +23,8 @@ const Write = () => {
   const [lat, setLat] = useState<number>(0);
   const [lng, setLng] = useState<number>(0);
 
+  const router = useRouter();
+
   // 자식 노드를 모두 삭제하는 함수
   function removeAllResultItems(parent, child) {
     if (parent) {
@@ -32,19 +35,21 @@ const Write = () => {
     }
   }
   const mutation = useMutation({
-    mutationFn: (newPost) => {
-      return axios.post('http://localhost:8000/api/v1/boards', newPost, {
+    mutationFn: async (newPost) => {
+      const res = await axios.post('http://localhost:8000/api/v1/boards', newPost, {
         headers: {
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcxOTkyNzc3NywiZXhwIjoxNzE5OTMxMzc3fQ.9WE428xYRrQUPiVXPPI5M-Trdwn0WbokusxiDAHAeqY`,
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcyMDI3NjEzNywiZXhwIjoxNzIwMjc5NzM3fQ.5-aUhnF9XsEsR8ZQybf_S8hn1OF66kzWJAAcI6Td654`,
           'Content-Type': 'application/json',
         },
       });
+
+      return res.data;
     },
-    onSuccess: async () => {
-      console.log("success!")
+    onSuccess: (data) => {
+      router.push(`/post/${data.id}`);
     },
-    onError: async (error) => {
-      console.log(error.message)
+    onError: (error) => {
+      console.log(error.message);
     },
   });
 
