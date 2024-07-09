@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../styles/globals.css";
+import ReactQueryProviders from "@/utils/react-query-provider";
 import WebNavBar from "@/components/navweb";
 import MobileNavBar from "@/components/nav";
 
@@ -22,7 +23,11 @@ export default function RootLayout({
         <div className="h-1/6">
           <WebNavBar />
         </div>
-        <main className="w-full h-4/6">{children}</main>
+        <main className="w-full h-4/6">
+          <ReactQueryProviders>
+            {children}
+          </ReactQueryProviders>
+        </main>
         <div className="h-1/6">
           <MobileNavBar />
         </div>

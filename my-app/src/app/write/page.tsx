@@ -1,7 +1,9 @@
 "use client";
-import { useState, useEffect } from 'react';
 
-import Link from 'next/link';
+import { useState, useEffect } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -21,6 +23,8 @@ const Write = () => {
   const [lat, setLat] = useState<number>(0);
   const [lng, setLng] = useState<number>(0);
 
+  const router = useRouter();
+
   // 자식 노드를 모두 삭제하는 함수
   function removeAllResultItems(parent, child) {
     if (parent) {
@@ -29,6 +33,49 @@ const Write = () => {
         resultItems[0].remove();
       }
     }
+  }
+  const mutation = useMutation({
+    mutationFn: async (newPost) => {
+      const res = await axios.post('http://localhost:8000/api/v1/boards', newPost, {
+        headers: {
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcyMDI3NjEzNywiZXhwIjoxNzIwMjc5NzM3fQ.5-aUhnF9XsEsR8ZQybf_S8hn1OF66kzWJAAcI6Td654`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      return res.data;
+    },
+    onSuccess: (data) => {
+      router.push(`/post/${data.id}`);
+    },
+    onError: (error) => {
+      console.log(error.message);
+    },
+  });
+
+  const createPost = () => {
+    const title = document.getElementById('title');
+    const description = document.getElementById('description');
+    const locationName = document.getElementById('location');
+
+    
+
+    const request = {
+      "title": title.value,
+      "category": category,
+      "description": description.value,
+      "location": {
+        "latitude": lat,
+        "longitude": lng
+      },
+      "locationName": locationName.value,
+      "maxCapacity": person,
+      "date": `${selectedDate.getFullYear()}-${selectedDate.getMonth() < 10 ? '0' : ''}${selectedDate.getMonth()}-${selectedDate.getDate() < 10 ? '0' : ''}${selectedDate.getDate()}`,
+      "startTime": value
+    };
+
+    mutation.mutate(request);
+    
   }
 
   useEffect(() => {
@@ -57,7 +104,7 @@ const Write = () => {
     kakaoMapScript.type = "text/javascript";
     kakaoMapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=4b5f228cb3b8bf6903521cc0f6f67769&autoload=false&libraries=services`;
     document.head.appendChild(kakaoMapScript);
-  
+
     const onLoadKakaoAPI = () => {
       window.kakao.maps.load(() => {
         // 장소 검색 서비스를 초기화합니다.
@@ -130,14 +177,13 @@ const Write = () => {
     <div className="flex flex-col h-screen items-center justify-center">
       <h1 className="text-darkpink font-semibold text-2xl">모집하기</h1>
       <div className="flex flex-col items-center md:w-[30rem] w-[22rem] space-y-4 my-10">
-        <input type="text" name="title" placeholder="제목을 입력해주세요." className="placeholder:text-zinc-500 text-slate-800 border-[1.5px] border-solid border-pink outline-darkpink rounded-[3px] h-11 w-full px-4 py-2.5 font-semibold text-sm" />
+        <input type="text" id="title" placeholder="제목을 입력해주세요." className="placeholder:text-zinc-500 text-slate-800 border-[1.5px] border-solid border-pink outline-darkpink rounded-[3px] h-11 w-full px-4 py-2.5 font-semibold text-sm" />
         <div className="flex md:flex-row flex-col justify-between w-full relative">
           <DatePicker
             showTimeInput
-            dateFormat='yyyy / MM / dd  HH:mm'
+            dateFormat='yyyy / MM / dd'
             shouldCloseOnSelect
-            minDate={new Date('2000-01-01')}
-            maxDate={new Date()}
+            minDate={new Date()}
             selected={selectedDate}
             onChange={(date) => setSelectedDate(date)}
             placeholderText="날짜를 선택해주세요."
@@ -189,11 +235,10 @@ const Write = () => {
           <input type="text" name="location" id="location" placeholder="만날 장소를 입력해주세요." className="placeholder:text-zinc-500 text-slate-800 border-[1.5px] border-solid border-pink outline-darkpink rounded-[3px] h-11 w-full px-4 py-2.5 font-semibold text-sm"/>
           <div id="result-list" className="hidden h-[18rem] bg-white border border-[1px] rounded-[3px] border-zinc-300 absolute top-full z-[100] w-full px-4 overflow-auto"></div>
         </div>
-        <textarea name="description" placeholder="상세 내용을 입력해주세요." rows={12} className="placeholder:text-zinc-500 text-slate-800 border-[1.5px] border-solid border-pink outline-darkpink rounded-[3px] h-70 w-full px-4 py-2.5 font-semibold text-sm"></textarea>
+        <textarea id="description" placeholder="상세 내용을 입력해주세요." rows={12} className="placeholder:text-zinc-500 text-slate-800 border-[1.5px] border-solid border-pink outline-darkpink rounded-[3px] h-70 w-full px-4 py-2.5 font-semibold text-sm"></textarea>
       </div>
-      <Link href="/post">
-        <button className="md:w-[30rem] w-[22rem] h-fit bg-darkpink text-md font-semibold text-white rounded-lg py-2 px-20 cursor-pointer">완료</button>  
-      </Link>
+      
+      <button className="md:w-[30rem] w-[22rem] h-fit bg-darkpink text-md font-semibold text-white rounded-lg py-2 px-20 cursor-pointer" onClick={createPost}>완료</button>  
     </div>
   );
 };
