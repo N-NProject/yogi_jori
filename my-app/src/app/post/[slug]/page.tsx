@@ -3,26 +3,11 @@
 import { useEffect, useState } from "react";
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import BackgroundImage from "@/assets/post/background.png";
 import MegaphoneImage from "@/assets/post/megaphone.png";
 import token from "@/constants/loginToken";
-
-const dummyData = {
-  "user_id" : 1,
-  "title": "하재민 생일 파티",
-  "description": "내 최애 하재민의 2차 팬미팅에 초대합니다 ! 저번 티켓팅 실패 하시분을 위해 친히 한번 더 열어주신답니다! 역시 하느님..!",
-  "date" : "04/22(월) 15:00",
-  "currentPerson": 1,
-  "maxPerson": 100,
-  "status": "OPEN",
-  "updatedAt" : "날짜형식",
-  "location": {
-    "latitude": 37.557434302,
-    "longitude": 126.926960224
-  },
-  "location_name": "홍대입구역"
-};
 
 declare global {
   interface Window {
@@ -33,18 +18,33 @@ declare global {
 const Post = ({ params }: { params: { slug: number } }) => {
   const [locationAddress, setLocationAddress] = useState<String>("");
   const [postData, setPostData] = useState<Object>({});
+  
+  const router = useRouter();
 
-  const mutation = useMutation({
-    mutationFn: async (id) => {
-      const res = await axios.get(`http://localhost:8000/api/v1/boards/${id}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
+  const getPostData = async (id) => {
+    const res = await axios.get(`http://localhost:8000/api/v1/boards/${id}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
 
-      return res.data;
-    },
+    return res.data;
+  };
+
+  const deletePostData = async (id) => {
+    const res = await axios.delete(`http://localhost:8000/api/v1/boards/${id}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return res.data;
+  }
+
+  const getMutation = useMutation({
+    mutationFn: getPostData, 
     onSuccess: (data) => {
       setPostData(data);
       loadKakaoMap(data.location.latitude, data.location.longitude);
@@ -53,6 +53,21 @@ const Post = ({ params }: { params: { slug: number } }) => {
       console.log(error.message);
     },
   });
+
+  const deleteMutation = useMutation({
+    mutationFn: deletePostData, 
+    onSuccess: (data) => {
+      console.log(data);
+      router.push(`/`);
+    },
+    onError: (error) => {
+      console.log(error.message);
+    },
+  });
+
+  const clickDeleteButton = () => {
+    deleteMutation.mutate(params.slug);
+  };
 
   const loadKakaoMap = (latitude, longitude) => {
     // 카카오맵 api를 사용하기 위해 Head 부분에 script 태그 추가하기
@@ -99,7 +114,7 @@ const Post = ({ params }: { params: { slug: number } }) => {
   };
 
   useEffect(() => {
-    mutation.mutate(params.slug);
+    getMutation.mutate(params.slug);
   }, []);
 
   return (
@@ -163,6 +178,10 @@ const Post = ({ params }: { params: { slug: number } }) => {
         </div>
         <div className="flex items-center justify-center md:min-h-24 min-h-12">
           <button className="h-fit bg-darkpink text-lg font-semibold text-white rounded-lg py-2 px-20 cursor-pointer">지금 당장 참여하기 ({postData.currentPerson}/{postData.maxCapacity})</button>
+          <div>
+            <button className="h-fit bg-darkpink text-lg font-semibold text-white rounded-lg py-2 px-20 cursor-pointer">수정</button>
+            <button className="h-fit bg-darkpink text-lg font-semibold text-white rounded-lg py-2 px-20 cursor-pointer" onClick={clickDeleteButton}>삭제</button>
+          </div>
         </div>
       </div>
     </div>
