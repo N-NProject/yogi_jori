@@ -2014,7 +2014,7 @@ __metadata:
     "@tanstack/query-core": "npm:5.50.1"
   peerDependencies:
     react: ^18.0.0
-  checksum: 10c0/ccf33245bc4f83c20b93a629e64edd9976a4d397ee51ee442326955a387345ff2b2a3813955faef6d08fde732eebb40557944df8335d50838094b703e79f35f9
+  checksum: 10c0/ccf33245bc4f83c20b93a629e64edd9976a4d397ee51ee442326955a387345ff2b2a3813955faef6d08fde732eebb40557944df8335d50838094b703e79f35f
   languageName: node
   linkType: hard
 

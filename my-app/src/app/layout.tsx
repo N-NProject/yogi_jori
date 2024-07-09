@@ -24,7 +24,9 @@ export default function RootLayout({
           <WebNavBar />
         </div>
         <main className="w-full h-4/6">
-          <ReactQueryProviders>{children}</ReactQueryProviders>
+          <ReactQueryProviders>
+            {children}
+          </ReactQueryProviders>
         </main>
         <div className="h-1/6">
           <MobileNavBar />
