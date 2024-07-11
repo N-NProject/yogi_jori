@@ -58,7 +58,7 @@ const Write = () => {
     const description = document.getElementById('description');
     const locationName = document.getElementById('location');
     const startTime = document.getElementById('startTime');
-
+    console.log(selectedDate.getDate())
     const request = {
       "title": title.value,
       "category": category,
@@ -69,10 +69,11 @@ const Write = () => {
       },
       "locationName": locationName.value,
       "maxCapacity": person,
-      "date": `${selectedDate.getFullYear()}-${selectedDate.getMonth() < 10 ? '0' : ''}${selectedDate.getMonth()}-${selectedDate.getDate() < 10 ? '0' : ''}${selectedDate.getDate()}`,
+      "date": `${selectedDate.getFullYear()}-${selectedDate.getMonth()+1 < 10 ? '0' : ''}${selectedDate.getMonth()+1}-${selectedDate.getDate() < 10 ? '0' : ''}${selectedDate.getDate()}`,
       "startTime": startTime.value
     };
 
+    console.log(request)
     mutation.mutate(request);
     
   }
