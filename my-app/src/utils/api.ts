@@ -8,7 +8,7 @@ const api = axios.create({
 api.interceptors.request.use(
   config => {
     const token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcyMDUyNzc1OCwiZXhwIjoxNzIwNTMxMzU4fQ.vTA-Cx4SGRIhcr0QN2p7gm7jzLfpshCu2fUvhcq2jbU";
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcyMDg3NDc0MiwiZXhwIjoxNzIwODc4MzQyfQ.wKAfuKq5UEFsoSh0DMJsQ41gnjywYvvwLXWsUzduqpo";
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -21,7 +21,7 @@ api.interceptors.request.use(
 
 export const getBoards = async () => {
   try {
-    const response = await api.get("http://localhost:8000/api/v1/boards");
+    const response = await api.get("api/v1/boards");
     return response.data;
   } catch (error) {
     console.error("Error fetching boards:", error);

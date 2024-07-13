@@ -7,24 +7,6 @@ import { getBoards } from "@/utils/api";
 import { Board } from "@/types/boards";
 import { useQuery } from "@tanstack/react-query";
 
-// 상태 결정 함수
-const determineStatus = (
-  date: string,
-  time: string | null,
-): "OPEN" | "CLOSE" => {
-  const eventDate = new Date(date);
-  const now = new Date();
-
-  if (!time) {
-    // startTime이 null인 경우
-    return eventDate > now ? "OPEN" : "CLOSE";
-  } else {
-    // startTime이 있는 경우
-    const eventDateTime = new Date(`${date}T${time}`);
-    return eventDateTime > now ? "OPEN" : "CLOSE";
-  }
-};
-
 const Boards = () => {
   const [selectedCategory, setSelectedCategory] = useState("전체");
   const [selectedStatus, setSelectedStatus] = useState<{
@@ -59,13 +41,8 @@ const Boards = () => {
     }));
   };
 
-  const postsWithStatus = posts.map(post => ({
-    ...post,
-    status: determineStatus(post.date, post.startTime),
-  }));
-
   // 필터링된 데이터
-  const filteredData = postsWithStatus.filter((data: Board) => {
+  const filteredData = posts.filter((data: Board) => {
     const categoryMatch =
       selectedCategory === "전체" || data.category === selectedCategory;
     const statusMatch =
