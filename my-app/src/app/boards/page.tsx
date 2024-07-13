@@ -2,82 +2,76 @@
 
 import PostPreview from "@/components/PostPreview";
 import MainTab from "@/components/MainTab";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getBoards } from "@/utils/api";
+import { Board } from "@/types/boards";
+import { useQuery } from "@tanstack/react-query";
 
-const dummyData = [
-  {
-    board_id: 1,
-    user_id: 1,
-    title: "커피챗",
-    tag: ["커피챗"],
-    date: "2023-08-17",
-    time: "18:00",
-    currentPerson: 22,
-    maxPerson: 100,
-    status: "OPEN",
-    location: "경기도 시흥시",
-  },
-  {
-    board_id: 2,
-    user_id: 1,
-    title: "친선 야구 경기",
-    tag: ["카공"],
-    date: "2023-04-17",
-    time: "18:00",
-    currentPerson: 22,
-    maxPerson: 30,
-    status: "CLOSE",
-    location: "서울특별시",
-  },
-  {
-    board_id: 3,
-    user_id: 1,
-    title: "하재민 생일파티",
-    tag: ["기타"],
-    date: "2023-08-17",
-    time: "18:00",
-    currentPerson: 599,
-    maxPerson: 600,
-    status: "OPEN",
-    location: "경기도 시흥시",
-  },
-  {
-    board_id: 4,
-    user_id: 1,
-    title: "next.js 스터디",
-    tag: ["카공"],
-    date: "2023-08-17",
-    time: "18:00",
-    currentPerson: 6,
-    maxPerson: 10,
-    status: "OPEN",
-    location: "경기도 시흥시",
-  },
-];
+// 상태 결정 함수
+const determineStatus = (
+  date: string,
+  time: string | null,
+): "OPEN" | "CLOSE" => {
+  const eventDate = new Date(date);
+  const now = new Date();
+
+  if (!time) {
+    // startTime이 null인 경우
+    return eventDate > now ? "OPEN" : "CLOSE";
+  } else {
+    // startTime이 있는 경우
+    const eventDateTime = new Date(`${date}T${time}`);
+    return eventDateTime > now ? "OPEN" : "CLOSE";
+  }
+};
 
 const Boards = () => {
   const [selectedCategory, setSelectedCategory] = useState("전체");
-  const [selectedStatus, setSelectedStatus] = useState<{ OPEN: boolean, CLOSE: boolean }>({
+  const [selectedStatus, setSelectedStatus] = useState<{
+    OPEN: boolean;
+    CLOSE: boolean;
+  }>({
     OPEN: false,
     CLOSE: false,
   });
+
+  const { data: posts = [], isLoading } = useQuery({
+    queryKey: ["boards"],
+    queryFn: getBoards,
+    refetchOnWindowFocus: false, // 윈도우가 다시 포커스되었을때 데이터를 refetch
+    refetchOnMount: false, // 데이터가 stale 상태이면 컴포넌트가 마운트될 때 refetch
+    retry: 1, // API 요청 실패시 재시도 하는 옵션 (설정값 만큼 재시도)
+  });
+
+  useEffect(() => {
+    console.log("Loading:", isLoading);
+    console.log("Data:", posts);
+  }, [isLoading, posts]);
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
   };
 
   const handleStatusChange = (status: "OPEN" | "CLOSE") => {
-    setSelectedStatus((prevStatus) => ({
+    setSelectedStatus(prevStatus => ({
       ...prevStatus,
       [status]: !prevStatus[status],
     }));
   };
 
-  const filteredData = dummyData.filter((data) => {
-    const categoryMatch = selectedCategory === "전체" || data.tag[0] === selectedCategory;
-    const statusMatch = (selectedStatus.OPEN && data.status === "OPEN") || 
-                        (selectedStatus.CLOSE && data.status === "CLOSE") || 
-                        (!selectedStatus.OPEN && !selectedStatus.CLOSE);
+  const postsWithStatus = posts.map(post => ({
+    ...post,
+    status: determineStatus(post.date, post.startTime),
+  }));
+
+  // 필터링된 데이터
+  const filteredData = postsWithStatus.filter((data: Board) => {
+    const categoryMatch =
+      selectedCategory === "전체" || data.category === selectedCategory;
+    const statusMatch =
+      (selectedStatus.OPEN && data.status === "OPEN") ||
+      (selectedStatus.CLOSE && data.status === "CLOSE") ||
+      (!selectedStatus.OPEN && !selectedStatus.CLOSE);
     return categoryMatch && statusMatch;
   });
 
@@ -89,35 +83,43 @@ const Boards = () => {
       <div className="flex justify-center lg:justify-start gap-[0.75rem] lg:gap-[1.25rem] px-[2rem] lg:px-[6rem] xl:px-[8rem]">
         <button
           onClick={() => handleStatusChange("OPEN")}
-          className={`w-[5rem] lg:w-[6.25rem] h-[2rem] lg:h-[2.25rem] border border-1 rounded-[1.25rem] ${selectedStatus.OPEN ? "border-darkpink bg-pink" : "border-gray"}`}
+          className={`w-[5rem] lg:w-[6.25rem] h-[2rem] lg:h-[2.25rem] border border-1 rounded-[1.25rem] ${
+            selectedStatus.OPEN ? "border-darkpink bg-pink" : "border-gray"
+          }`}
         >
           <span className="text-xs">모집 중</span>
         </button>
         <button
           onClick={() => handleStatusChange("CLOSE")}
-          className={`w-[5rem] lg:w-[6.25rem] h-[2rem] lg:h-[2.25rem] border border-1 rounded-[1.25rem] ${selectedStatus.CLOSE ? "border-darkpink bg-pink" : "border-gray"}`}
+          className={`w-[5rem] lg:w-[6.25rem] h-[2rem] lg:h-[2.25rem] border border-1 rounded-[1.25rem] ${
+            selectedStatus.CLOSE ? "border-darkpink bg-pink" : "border-gray"
+          }`}
         >
           <span className="text-xs">모집 종료</span>
         </button>
       </div>
       <div className="flex justify-center">
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 xl:gap-8 py-[1.5rem]">
-          {filteredData.map((data) => (
-            <PostPreview
-              key={data.board_id}
-              board_id={data.board_id}
-              title={data.title}
-              tag={data.tag}
-              date={data.date}
-              time={data.time}
-              currentPerson={data.currentPerson}
-              maxPerson={data.maxPerson}
-              location={data.location}
-            />
-          ))}
-        </div>
+        {isLoading ? (
+          <p>Loading...</p> // 로딩 중 메시지
+        ) : (
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 xl:gap-8 py-[1.5rem]">
+            {filteredData.map((data: Board) => (
+              <PostPreview
+                key={data.id}
+                boardId={data.id}
+                title={data.title}
+                tag={[data.category]}
+                date={data.date}
+                time={data.startTime}
+                maxCapacity={data.maxCapacity}
+                locationName={data.location.locationName}
+                status={data.status}
+                currentPerson={data.currentPerson} // currentPerson 추가
+              />
+            ))}
+          </div>
+        )}
       </div>
-      
     </main>
   );
 };
