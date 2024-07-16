@@ -2,27 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+
+.top-nav .menu-wrapper {
+  @apply fixed top-0 left-0 bottom-0;
+  width: 600px;
+  transform: translateX(-600px);
+  transition: transform 0.7s;
+  background: rgba(128, 128, 128, 0.8);
+  border-radius: 0 2rem 2rem 0;
+  backdrop-filter: blur(10px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.top-nav .menu-wrapper.is-opened {
+  transform: translateX(80px);
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-end-rgb));
+.top-nav .menu-wrapper .menu {
+  opacity: 0;
+  transition: opacity 0.4s;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.top-nav .menu-wrapper.is-opened .menu {
+  opacity: 1;
+  transition-delay: 0.6s;
+}
+
+.menu-close {
+  @apply absolute top-5 right-5 text-2xl;
+}
+.top-nav .fixed-menu {
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
 }

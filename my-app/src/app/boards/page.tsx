@@ -57,7 +57,10 @@ const dummyData = [
 
 const Boards = () => {
   const [selectedCategory, setSelectedCategory] = useState("전체");
-  const [selectedStatus, setSelectedStatus] = useState<{ OPEN: boolean, CLOSE: boolean }>({
+  const [selectedStatus, setSelectedStatus] = useState<{
+    OPEN: boolean;
+    CLOSE: boolean;
+  }>({
     OPEN: false,
     CLOSE: false,
   });
@@ -67,17 +70,19 @@ const Boards = () => {
   };
 
   const handleStatusChange = (status: "OPEN" | "CLOSE") => {
-    setSelectedStatus((prevStatus) => ({
+    setSelectedStatus(prevStatus => ({
       ...prevStatus,
       [status]: !prevStatus[status],
     }));
   };
 
-  const filteredData = dummyData.filter((data) => {
-    const categoryMatch = selectedCategory === "전체" || data.tag[0] === selectedCategory;
-    const statusMatch = (selectedStatus.OPEN && data.status === "OPEN") || 
-                        (selectedStatus.CLOSE && data.status === "CLOSE") || 
-                        (!selectedStatus.OPEN && !selectedStatus.CLOSE);
+  const filteredData = dummyData.filter(data => {
+    const categoryMatch =
+      selectedCategory === "전체" || data.tag[0] === selectedCategory;
+    const statusMatch =
+      (selectedStatus.OPEN && data.status === "OPEN") ||
+      (selectedStatus.CLOSE && data.status === "CLOSE") ||
+      (!selectedStatus.OPEN && !selectedStatus.CLOSE);
     return categoryMatch && statusMatch;
   });
 
@@ -89,20 +94,24 @@ const Boards = () => {
       <div className="flex justify-center lg:justify-start gap-[0.75rem] lg:gap-[1.25rem] px-[2rem] lg:px-[6rem] xl:px-[8rem]">
         <button
           onClick={() => handleStatusChange("OPEN")}
-          className={`w-[5rem] lg:w-[6.25rem] h-[2rem] lg:h-[2.25rem] border border-1 rounded-[1.25rem] ${selectedStatus.OPEN ? "border-darkpink bg-pink" : "border-gray"}`}
+          className={`w-[5rem] lg:w-[6.25rem] h-[2rem] lg:h-[2.25rem] border border-1 rounded-[1.25rem] ${
+            selectedStatus.OPEN ? "border-darkpink bg-pink" : "border-gray"
+          }`}
         >
           <span className="text-xs">모집 중</span>
         </button>
         <button
           onClick={() => handleStatusChange("CLOSE")}
-          className={`w-[5rem] lg:w-[6.25rem] h-[2rem] lg:h-[2.25rem] border border-1 rounded-[1.25rem] ${selectedStatus.CLOSE ? "border-darkpink bg-pink" : "border-gray"}`}
+          className={`w-[5rem] lg:w-[6.25rem] h-[2rem] lg:h-[2.25rem] border border-1 rounded-[1.25rem] ${
+            selectedStatus.CLOSE ? "border-darkpink bg-pink" : "border-gray"
+          }`}
         >
           <span className="text-xs">모집 종료</span>
         </button>
       </div>
-      <div className="flex justify-center">
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 xl:gap-8 py-[1.5rem]">
-          {filteredData.map((data) => (
+      <div className="flex justify-center ">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 xl:gap-8 py-[1.5rem]">
+          {filteredData.map(data => (
             <PostPreview
               key={data.board_id}
               board_id={data.board_id}
@@ -117,7 +126,6 @@ const Boards = () => {
           ))}
         </div>
       </div>
-      
     </main>
   );
 };

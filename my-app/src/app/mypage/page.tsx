@@ -10,16 +10,17 @@ import PostPreview from "@/components/PostPreview";
 import WebNavBar from "@/components/navweb";
 
 const dummyData = {
+  name: "곽소정",
+  board_id: 1,
   user_id: 1,
-  name: "하재민",
-  title: "하재민 생일 파티",
-  description:
-    "내 최애 하재민의 2차 팬미팅에 초대합니다 ! 저번 티켓팅 실패 하시분을 위해 친히 한번 더 열어주신답니다! 역시 하느님..!",
-  date: "04/22(월) 15:00",
-  currentPerson: 1,
+  title: "커피챗",
+  tag: ["커피챗"],
+  date: "2023-08-17",
+  time: "18:00",
+  currentPerson: 22,
   maxPerson: 100,
   status: "OPEN",
-  updatedAt: "날짜형식",
+  location_name: "홍대입구역",
 };
 
 const MyPage = () => {
@@ -54,24 +55,104 @@ const MyPage = () => {
           <h1 className=" mb-[2rem] text-[20px]">작성한 게시글</h1>
           <div className="write_post overflow-y-hidden">
             <div className="flex mb-3">
-              <PostPreview></PostPreview>
-              <PostPreview></PostPreview>
+              <PostPreview
+                key={dummyData.board_id}
+                board_id={dummyData.board_id}
+                title={dummyData.title}
+                tag={dummyData.tag}
+                date={dummyData.date}
+                time={dummyData.time}
+                currentPerson={dummyData.currentPerson}
+                maxPerson={dummyData.maxPerson}
+                location={dummyData.location}
+              />
+              <PostPreview
+                key={dummyData.board_id}
+                board_id={dummyData.board_id}
+                title={dummyData.title}
+                tag={dummyData.tag}
+                date={dummyData.date}
+                time={dummyData.time}
+                currentPerson={dummyData.currentPerson}
+                maxPerson={dummyData.maxPerson}
+                location={dummyData.location_name}
+              />
             </div>
             <div className="flex ">
-              <PostPreview></PostPreview>
-              <PostPreview></PostPreview>
+              <PostPreview
+                key={dummyData.board_id}
+                board_id={dummyData.board_id}
+                title={dummyData.title}
+                tag={dummyData.tag}
+                date={dummyData.date}
+                time={dummyData.time}
+                currentPerson={dummyData.currentPerson}
+                maxPerson={dummyData.maxPerson}
+                location={dummyData.location}
+              />
+              <PostPreview
+                key={dummyData.board_id}
+                board_id={dummyData.board_id}
+                title={dummyData.title}
+                tag={dummyData.tag}
+                date={dummyData.date}
+                time={dummyData.time}
+                currentPerson={dummyData.currentPerson}
+                maxPerson={dummyData.maxPerson}
+                location={dummyData.location}
+              />
             </div>
           </div>
 
           <h1 className=" mt-[2rem] mb-[2rem] text-[20px]  ">참여한 게시글</h1>
           <div className="write_post  flex flex-col justify-center   overflow-y-hidden">
             <div className="flex mb-3">
-              <PostPreview></PostPreview>
-              <PostPreview></PostPreview>
+              <PostPreview
+                key={dummyData.board_id}
+                board_id={dummyData.board_id}
+                title={dummyData.title}
+                tag={dummyData.tag}
+                date={dummyData.date}
+                time={dummyData.time}
+                currentPerson={dummyData.currentPerson}
+                maxPerson={dummyData.maxPerson}
+                location={dummyData.location}
+              />
+              <PostPreview
+                key={dummyData.board_id}
+                board_id={dummyData.board_id}
+                title={dummyData.title}
+                tag={dummyData.tag}
+                date={dummyData.date}
+                time={dummyData.time}
+                currentPerson={dummyData.currentPerson}
+                maxPerson={dummyData.maxPerson}
+                location={dummyData.location}
+              />
             </div>
             <div className="flex ">
-              <PostPreview></PostPreview>
-              <PostPreview></PostPreview>
+              <PostPreview
+                key={dummyData.board_id}
+                board_id={dummyData.board_id}
+                title={dummyData.title}
+                tag={dummyData.tag}
+                date={dummyData.date}
+                time={dummyData.time}
+                currentPerson={dummyData.currentPerson}
+                maxPerson={dummyData.maxPerson}
+                location={dummyData.location}
+              />
+              <PostPreview
+                key={dummyData.board_id}
+                board_id={dummyData.board_id}
+                title={dummyData.title}
+                tag={dummyData.tag}
+                date={dummyData.date}
+                time={dummyData.time}
+                currentPerson={dummyData.currentPerson}
+                maxPerson={dummyData.maxPerson}
+                location={dummyData.location}
+              />
             </div>
           </div>
         </div>
