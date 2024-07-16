@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -17,22 +16,9 @@ declare global {
     kakao: any;
   }
 };
-// {
-//   "id": 1,
-//   "title": "보드게임 할 사람?",
-//   "maxCapacity": 4,
-//   "description": "string",
-//   "startTime": null,
-//   "date": "2024-05-20",
-//   "category": "보드게임",
-//   "location": {
-//     "latitude": 33.33,
-//     "longitude": 22.22,
-//     "locationName": "소정이네 집"
-//   },
-// }
+
 const EditModalBox = ({postData, clickModal}) : EditModalBoxProps => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(postData.date);
+  const [selectedDate, setSelectedDate] = useState<Date | string>(postData.date);
   const [view, setView] = useState(false); 
   const [person, setPerson] = useState<number>(postData.maxCapacity);
   const [category, setCategory] = useState<String>(postData.category);
@@ -41,6 +27,52 @@ const EditModalBox = ({postData, clickModal}) : EditModalBoxProps => {
   const [lng, setLng] = useState<number>(postData.location?.longitude);
   const [isHovered, setIsHovered] = useState(false);
 
+  const mutation = useMutation({
+    mutationFn: async (editedPost) => {
+      const res = await axios.patch(`http://localhost:8000/api/v1/boards/${postData.id}`, editedPost, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      return res.data;
+    },
+    onSuccess: (data) => {
+      clickModal();
+      //location.reload();
+    },
+    onError: (error) => {
+      console.log(error.message);
+    },
+  });
+
+  const editPost = () => {
+    const title = document.getElementById('title');
+    const description = document.getElementById('description');
+    const locationName = document.getElementById('location');
+    const startTime = document.getElementById('startTime');
+
+    const request = {
+      "title": title.value,
+      "category": category,
+      "description": description.value,
+      "location": {
+        "latitude": lat,
+        "longitude": lng
+      },
+      "locationName": locationName.value,
+      "maxCapacity": person,
+      "date": typeof selectedDate === 'string' 
+        ? selectedDate 
+        : `${selectedDate.getFullYear()}-${selectedDate.getMonth()+1 < 10 ? '0' : ''}${selectedDate.getMonth()+1}-${selectedDate.getDate() < 10 ? '0' : ''}${selectedDate.getDate()}`,
+      "startTime": startTime.value
+    };
+
+    console.log(request)
+    mutation.mutate(request);
+    
+  }
   // 자식 노드를 모두 삭제하는 함수
   function removeAllResultItems(parent, child) {
     if (parent) {
@@ -50,6 +82,25 @@ const EditModalBox = ({postData, clickModal}) : EditModalBoxProps => {
       }
     }
   }
+
+  useEffect(() => {
+    console.log(view)
+    const personList = document.getElementById('personList');
+    const personListItems = document.getElementsByClassName('person-item');
+
+    if (view) {
+      personList?.classList.remove('hidden');
+      Array.from(personListItems).forEach(item => {
+        item.classList.remove('hidden');
+      });
+    }
+    if (!view) {
+      personList?.classList.add('hidden');
+      Array.from(personListItems).forEach(item => {
+        item.classList.add('hidden');
+      });
+    }
+  }, [view]);
 
   useEffect(() => {
     // 카카오맵 api를 사용하기 위해 Head 부분에 script 태그 추가하기
@@ -206,7 +257,7 @@ const EditModalBox = ({postData, clickModal}) : EditModalBoxProps => {
           </div>
           <textarea id="description" placeholder="상세 내용을 입력해주세요." defaultValue={postData.description} rows={12} className="placeholder:text-zinc-500 text-slate-800 border-[1.5px] border-solid border-pink outline-darkpink rounded-[3px] h-70 w-full px-4 py-2.5 font-semibold text-sm"></textarea>
         </div>    
-        <button className="md:w-[30rem] w-[22rem] h-fit bg-darkpink text-md font-semibold text-white rounded-lg py-2 px-20 cursor-pointer">완료</button>  
+        <button className="md:w-[30rem] w-[22rem] h-fit bg-darkpink text-md font-semibold text-white rounded-lg py-2 px-20 cursor-pointer" onClick={editPost}>완료</button>  
       </div>
     </div>
   );

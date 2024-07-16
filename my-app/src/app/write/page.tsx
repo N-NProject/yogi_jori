@@ -58,7 +58,7 @@ const Write = () => {
     const description = document.getElementById('description');
     const locationName = document.getElementById('location');
     const startTime = document.getElementById('startTime');
-    console.log(selectedDate.getDate())
+    
     const request = {
       "title": title.value,
       "category": category,
