@@ -185,7 +185,7 @@ const Post = ({ params }: { params: { slug: number } }) => {
               <p className="w-fit px-3 py-1 inline-block rounded-2xl font-semibold border-solid border-2 border-pink">
                 날짜
               </p>
-              <p className="inline-block ml-3 text-lg">{postData.date} {postData.startTime}</p>
+              <p className="inline-block ml-3 text-lg">{postData.date} {postData.startTime ? postData.startTime.slice(0, 5) : ''}</p>
             </div>
             <div className="mb-2">
               <p className="w-fit px-3 py-1 inline-block rounded-2xl font-semibold border-solid border-2 border-pink">
@@ -213,11 +213,14 @@ const Post = ({ params }: { params: { slug: number } }) => {
           </div>
         </div>
         <div className="flex items-center justify-center md:min-h-24 min-h-12">
-          <button className="h-fit bg-darkpink text-lg font-semibold text-white rounded-lg py-2 px-20 cursor-pointer" onClick={clickJoinButton}>지금 당장 참여하기 ({postData.currentPerson}/{postData.maxCapacity})</button>
-          <div>
-            <button className="h-fit bg-darkpink text-lg font-semibold text-white rounded-lg py-2 px-20 cursor-pointer" onClick={clickEditButton}>수정</button>
-            <button className="h-fit bg-darkpink text-lg font-semibold text-white rounded-lg py-2 px-20 cursor-pointer" onClick={clickDeleteButton}>삭제</button>
-          </div>
+          {
+            postData.editable ?
+            <div className="flex space-x-7">
+              <button className="h-fit bg-darkpink text-lg font-semibold text-white rounded-lg py-2 md:px-20 px-10 cursor-pointer" onClick={clickEditButton}>수정</button>
+              <button className="h-fit bg-darkpink text-lg font-semibold text-white rounded-lg py-2 md:px-20 px-10 cursor-pointer" onClick={clickDeleteButton}>삭제</button>
+            </div> :
+            <button className="h-fit bg-darkpink text-lg font-semibold text-white rounded-lg py-2 px-20 cursor-pointer" onClick={clickJoinButton}>지금 당장 참여하기 ({postData.currentPerson}/{postData.maxCapacity})</button>
+          }
         </div>
       </div>
       {showModal && <EditModalBox postData={postData} clickModal={clickEditButton} />}
