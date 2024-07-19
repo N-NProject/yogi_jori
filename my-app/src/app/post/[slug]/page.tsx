@@ -45,9 +45,24 @@ const Post = ({ params }: { params: { slug: number } }) => {
     return res.data;
   }
 
+  const joinChatRoom = async (id) => {
+    const res = await axios.post(`http://localhost:8000/api/v1/chatrooms/join`, {}, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      params: {
+        'boardId': id
+      }
+    });
+
+    return res.data;
+  }
+
   const getMutation = useMutation({
     mutationFn: getPostData, 
     onSuccess: (data) => {
+      console.log(data)
       setPostData(data);
       loadKakaoMap(data.location.latitude, data.location.longitude);
     },
@@ -67,6 +82,17 @@ const Post = ({ params }: { params: { slug: number } }) => {
     },
   });
 
+  const joinMutation = useMutation({
+    mutationFn: joinChatRoom, 
+    onSuccess: (data) => {
+      console.log(data);
+      //router.push(`/`);
+    },
+    onError: (error) => {
+      console.log(error.message);
+    },
+  });
+
   const clickEditButton = () => {
     setShowModal(!showModal)
   };
@@ -74,6 +100,10 @@ const Post = ({ params }: { params: { slug: number } }) => {
   const clickDeleteButton = () => {
     deleteMutation.mutate(params.slug);
   };
+
+  const clickJoinButton = () => {
+    joinMutation.mutate(params.slug);
+  }
 
   const loadKakaoMap = (latitude, longitude) => {
     // 카카오맵 api를 사용하기 위해 Head 부분에 script 태그 추가하기
@@ -183,7 +213,7 @@ const Post = ({ params }: { params: { slug: number } }) => {
           </div>
         </div>
         <div className="flex items-center justify-center md:min-h-24 min-h-12">
-          <button className="h-fit bg-darkpink text-lg font-semibold text-white rounded-lg py-2 px-20 cursor-pointer">지금 당장 참여하기 ({postData.currentPerson}/{postData.maxCapacity})</button>
+          <button className="h-fit bg-darkpink text-lg font-semibold text-white rounded-lg py-2 px-20 cursor-pointer" onClick={clickJoinButton}>지금 당장 참여하기 ({postData.currentPerson}/{postData.maxCapacity})</button>
           <div>
             <button className="h-fit bg-darkpink text-lg font-semibold text-white rounded-lg py-2 px-20 cursor-pointer" onClick={clickEditButton}>수정</button>
             <button className="h-fit bg-darkpink text-lg font-semibold text-white rounded-lg py-2 px-20 cursor-pointer" onClick={clickDeleteButton}>삭제</button>
