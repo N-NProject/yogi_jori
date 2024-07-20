@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import token from "@/constants/loginToken";
 
 declare global {
   interface Window {
@@ -19,7 +20,6 @@ const Write = () => {
   const [person, setPerson] = useState<number>();
   const [category, setCategory] = useState<String>();
   const personItems = Array.from({ length: 15 }, (_, index) => index + 1);
-  const [value, onChange] = useState('10:00');  
   const [lat, setLat] = useState<number>(0);
   const [lng, setLng] = useState<number>(0);
 
@@ -38,7 +38,7 @@ const Write = () => {
     mutationFn: async (newPost) => {
       const res = await axios.post('http://localhost:8000/api/v1/boards', newPost, {
         headers: {
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTcyMDI3NjEzNywiZXhwIjoxNzIwMjc5NzM3fQ.5-aUhnF9XsEsR8ZQybf_S8hn1OF66kzWJAAcI6Td654`,
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       });
@@ -57,9 +57,8 @@ const Write = () => {
     const title = document.getElementById('title');
     const description = document.getElementById('description');
     const locationName = document.getElementById('location');
-
+    const startTime = document.getElementById('startTime');
     
-
     const request = {
       "title": title.value,
       "category": category,
@@ -70,10 +69,11 @@ const Write = () => {
       },
       "locationName": locationName.value,
       "maxCapacity": person,
-      "date": `${selectedDate.getFullYear()}-${selectedDate.getMonth() < 10 ? '0' : ''}${selectedDate.getMonth()}-${selectedDate.getDate() < 10 ? '0' : ''}${selectedDate.getDate()}`,
-      "startTime": value
+      "date": `${selectedDate.getFullYear()}-${selectedDate.getMonth()+1 < 10 ? '0' : ''}${selectedDate.getMonth()+1}-${selectedDate.getDate() < 10 ? '0' : ''}${selectedDate.getDate()}`,
+      "startTime": startTime.value
     };
 
+    console.log(request)
     mutation.mutate(request);
     
   }
@@ -191,7 +191,7 @@ const Write = () => {
             calendarClassName="bg-pink"
           />
           <div className='flex md:flex-row justify-between md:mt-0 mt-4'>
-            <input type='time' className='placeholder:text-zinc-500 text-slate-800 border-[1.5px] border-solid border-pink outline-darkpink rounded-[3px] h-11 md:w-36 w-2/3 md:absolute right-[7rem] px-4 py-2.5 font-semibold text-sm text-zinc-500 cursor-pointer'/>
+            <input type='time' id='startTime' className='placeholder:text-zinc-500 text-slate-800 border-[1.5px] border-solid border-pink outline-darkpink rounded-[3px] h-11 md:w-36 w-2/3 md:absolute right-[7rem] px-4 py-2.5 font-semibold text-sm text-zinc-500 cursor-pointer'/>
             <div className='relative'>
               <div 
                 className={`bg-white absolute border-solid rounded-[3px] h-50 right-0 z-10 max-w-[10rem] cursor-pointer w-24 px-4 py-2.5 font-semibold text-sm text-zinc-500
