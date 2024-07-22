@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -6,17 +8,18 @@ import close from "@/assets/chat/close.svg";
 import back from "@/assets/chat/icons_back.svg";
 import sample from "@/assets/chat/sample.svg";
 
+import PostPreview from "@/components/PostPreview";
+
 const dummyData = {
+  board_id: 1,
   user_id: 1,
-  name: "하재민",
-  title: "하재민 생일 파티",
-  description:
-    "내 최애 하재민의 2차 팬미팅에 초대합니다 ! 저번 티켓팅 실패 하시분을 위해 친히 한번 더 열어주신답니다! 역시 하느님..!",
-  date: "04/22(월) 15:00",
-  currentPerson: 1,
+  title: "커피챗",
+  tag: ["커피챗"],
+  date: "2023-08-17",
+  time: "18:00",
+  currentPerson: 22,
   maxPerson: 100,
-  status: "OPEN",
-  updatedAt: "날짜형식",
+  location: "경기도 시흥시",
 };
 
 const Chat = () => {
@@ -25,6 +28,8 @@ const Chat = () => {
       <main className="chat flex w-[100%] min-h-screen  ">
         <div className="chat_list flex flex-col  my-[1rem] bg-white xl:border-r  xl:w-[50rem] lg:w-[40rem] lg:border-r md:w-[30rem] md:border-r w-0">
           <div className="flex justify-between h-[4rem] mx-[1rem] mb-[1rem] ">
+
+            
             <div className="flex items-center">
               <Image src={icons_chat} alt="채팅 아이콘"></Image>
               <h1 className="text-[1.5rem] font-semibold ml-[0.5rem]">CHAT</h1>
@@ -35,13 +40,19 @@ const Chat = () => {
             </button>
           </div>
 
-          <ul className="px-[1rem]">
-            <li>
-              <Image className="mb-[1rem]" src={sample} alt="1" />
-            </li>
-            <li>
-              <Image className="" src={sample} alt="1" />
-            </li>
+          <ul className="px-[1rem] mx-[1em] ">
+            <PostPreview
+              key={dummyData.board_id}
+              board_id={dummyData.board_id}
+              title={dummyData.title}
+              tag={dummyData.tag}
+              date={dummyData.date}
+              time={dummyData.time}
+              currentPerson={dummyData.currentPerson}
+              maxPerson={dummyData.maxPerson}
+              location={dummyData.location}
+            />
+   
           </ul>
         </div>
 

@@ -41,10 +41,16 @@ const Boards = () => {
     }));
   };
 
+
+  const filteredData = dummyData.filter(data => {
+    const categoryMatch =
+      selectedCategory === "전체" || data.tag[0] === selectedCategory;
+
   // 필터링된 데이터
   const filteredData = posts.filter((data: Board) => {
     const categoryMatch =
       selectedCategory === "전체" || data.category === selectedCategory;
+
     const statusMatch =
       (selectedStatus.OPEN && data.status === "OPEN") ||
       (selectedStatus.CLOSE && data.status === "CLOSE") ||
@@ -75,6 +81,24 @@ const Boards = () => {
           <span className="text-xs">모집 종료</span>
         </button>
       </div>
+
+      <div className="flex justify-center ">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 xl:gap-8 py-[1.5rem]">
+          {filteredData.map(data => (
+            <PostPreview
+              key={data.board_id}
+              board_id={data.board_id}
+              title={data.title}
+              tag={data.tag}
+              date={data.date}
+              time={data.time}
+              currentPerson={data.currentPerson}
+              maxPerson={data.maxPerson}
+              location={data.location}
+            />
+          ))}
+        </div>
+
       <div className="flex justify-center">
         {isLoading ? (
           <p>Loading...</p> // 로딩 중 메시지
@@ -96,6 +120,7 @@ const Boards = () => {
             ))}
           </div>
         )}
+
       </div>
     </main>
   );

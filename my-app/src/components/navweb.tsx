@@ -1,42 +1,188 @@
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-
+import { motion } from "framer-motion";
 import title from "@/assets/nav/title.svg";
-import main from "@/assets/nav/main.svg";
-import main_hover from "@/assets/nav/main_hover.svg";
-import chat from "@/assets/nav/chat.svg";
-import alarm from "@/assets/nav/alarm.svg";
-import write from "@/assets/nav/write.svg";
-import mypage from "@/assets/nav/mypage.svg";
+import { CgAdd } from "react-icons/cg";
+import { VscAccount } from "react-icons/vsc";
+import icons_chat from "@/assets/chat/icons_chat.svg";
+import Sidebar from "@/components/SideBar";
 
-const navBarWeb = () => {
+const useSidebar = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [currentSidebarTab, setCurrentSidebarTab] = useState(null);
+  const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useState(false);
+  const [isSubHeaderOpen, setIsSubHeaderOpen] = useState(false);
+
+  const watchScreen = () => {
+    if (window.innerWidth <= 1024) {
+      setIsSidebarOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", watchScreen);
+    return () => {
+      window.removeEventListener("resize", watchScreen);
+    };
+  }, []);
+
+  return {
+    isSidebarOpen,
+    setIsSidebarOpen,
+    currentSidebarTab,
+    setCurrentSidebarTab,
+    isSettingsPanelOpen,
+    setIsSettingsPanelOpen,
+    isSubHeaderOpen,
+    setIsSubHeaderOpen,
+  };
+};
+
+const NavBarWeb: React.FC = () => {
+  const {
+    isSidebarOpen,
+    setIsSidebarOpen,
+    currentSidebarTab,
+    setCurrentSidebarTab,
+  } = useSidebar();
+
+  const handleSidebarToggle = (tab: string) => {
+    if (isSidebarOpen && currentSidebarTab === tab) {
+      setIsSidebarOpen(false);
+    } else {
+      setIsSidebarOpen(true);
+      setCurrentSidebarTab(tab);
+    }
+  };
+
   return (
-    <div className="bg-white w-20 h-screen md:flex hidden flex-col items-center border-solid border-r border-lightgray">
+    <div className="bg-white w-20 z-0 h-screen md:flex hidden flex-col items-center border-solid border-r border-lightgray">
       <Image className="bg-white w-20 h-30" src={title} alt="title" />
-
+      <nav></nav>
       <div className="h-[100rem] mt-[1rem] flex flex-col justify-around">
         <Link href="/boards">
-          <Image src={main ? main_hover : main} alt="메인게시판" />
+          <button
+            onClick={() => handleSidebarToggle("linksTab")}
+            className={`p-2 transition-colors rounded-lg shadow-md hover:bg-red-700 hover:text-white focus:outline-none focus:ring focus:ring-darkpink focus:ring-offset-white focus:ring-offset-2 text-gray-500 bg-darkpink ${
+              isSidebarOpen && currentSidebarTab === "linksTab"
+                ? "text-white bg-primary"
+                : "text-gray-500 bg-white"
+            }`}
+          >
+            <span className="sr-only">Toggle sidebar</span>
+            <svg
+              aria-hidden="true"
+              className="w-6 h-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16M4 18h7"
+              ></path>
+            </svg>
+          </button>
         </Link>
+
         <Link href="/chat">
-          <Image className="" src={chat} alt="채팅" />
+          {/* 초기 사이드바 배포시 지우세여 */}
+          {/* <button
+            onClick={() => handleSidebarToggle("messagesTab")}
+            className={` transition-colors rounded-lg shadow-md hover:bg-red-700 hover:text-white focus:outline-none focus:ring focus:ring-darkpink focus:ring-offset-white focus:ring-offset-2 text-gray-500 bg-darkpink
+               ${
+                 isSidebarOpen && currentSidebarTab === "messagesTab"
+                   ? "text-white bg-primary"
+                   : "text-gray-500 bg-white"
+               }
+            `}
+          >
+            <span className="sr-only">Toggle message panel</span>
+        
+          </button> */}
+          <Sidebar />
         </Link>
         <Link href="/alarm">
-          <Image src={alarm} alt="알람" />
+          <button
+            onClick={() => handleSidebarToggle("notificationsTab")}
+            className={`p-2 transition-colors rounded-lg shadow-md hover:bg-red-700 hover:text-white focus:outline-none focus:ring focus:ring-darkpink focus:ring-offset-white focus:ring-offset-2 text-gray-500 bg-darkpink ${
+              isSidebarOpen && currentSidebarTab === "notificationsTab"
+                ? "text-white bg-primary"
+                : "text-gray-500 bg-white"
+            }`}
+          >
+            <span className="sr-only">Toggle notifications panel</span>
+            <svg
+              aria-hidden="true"
+              className="w-6 h-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+              ></path>
+            </svg>
+          </button>
         </Link>
       </div>
 
       <div className="h-96 mt-80 flex flex-col justify-around items-center mb-[4rem]">
         <Link className="mb-[2rem]" href="/write">
-          <Image src={write} alt="작성" />
+          <button
+            onClick={() => handleSidebarToggle("writeTab")}
+            className={`p-2 transition-colors rounded-lg shadow-md hover:bg-red-700 hover:text-white focus:outline-none focus:ring focus:ring-darkpink focus:ring-offset-white focus:ring-offset-2 text-gray-500 bg-darkpink ${
+              isSidebarOpen && currentSidebarTab === "writeTab"
+                ? "text-white bg-primary"
+                : "text-gray-500 bg-white"
+            }`}
+          >
+            <CgAdd className="w-7 h-7" />
+          </button>
         </Link>
         <Link href="/mypage">
-          <Image src={mypage} alt="마이 페이지" />
+          <button
+            onClick={() => handleSidebarToggle("mypageTab")}
+            className={`p-2 transition-colors rounded-lg shadow-md hover:bg-red-700 hover:text-white focus:outline-none focus:ring focus:ring-darkpink focus:ring-offset-white focus:ring-offset-2 text-gray-500 bg-darkpink ${
+              isSidebarOpen && currentSidebarTab === "mypageTab"
+                ? "text-white bg-primary"
+                : "text-gray-500 bg-white"
+            }`}
+          >
+            <VscAccount className="w-6 h-6" />
+          </button>
         </Link>
       </div>
+
+      {/* 초기사이드바 모션애니메이션 배포시 지울것 */}
+      {/* <motion.div
+        animate={{
+          x:
+            isSidebarOpen && currentSidebarTab === "messagesTab"
+              ? "6.5%"
+              : "-140%",
+        }}
+        transition={{ duration: 0.2 }}
+        className="fixed inset-y-0 left-[3.1rem]  flex-shrink-0 w-[30rem] bg-white border-r-2 border-indigo-100 shadow-lg  rounded-tr-3xl rounded-br-3xl "
+      >
+        {isSidebarOpen && currentSidebarTab === "messagesTab" && (
+          <section className="flex px-4 py-6">
+            <Image src={icons_chat} alt="채팅 아이콘"></Image>
+            <h2 className="text-xl">CHAT</h2>
+          </section>
+        )}
+      </motion.div> */}
     </div>
   );
 };
 
-export default navBarWeb;
+export default NavBarWeb;
