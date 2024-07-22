@@ -2,58 +2,10 @@
 
 import PostPreview from "@/components/PostPreview";
 import MainTab from "@/components/MainTab";
-import { useState } from "react";
-
-const dummyData = [
-  {
-    board_id: 1,
-    user_id: 1,
-    title: "커피챗",
-    tag: ["커피챗"],
-    date: "2023-08-17",
-    time: "18:00",
-    currentPerson: 22,
-    maxPerson: 100,
-    status: "OPEN",
-    location: "경기도 시흥시",
-  },
-  {
-    board_id: 2,
-    user_id: 1,
-    title: "친선 야구 경기",
-    tag: ["카공"],
-    date: "2023-04-17",
-    time: "18:00",
-    currentPerson: 22,
-    maxPerson: 30,
-    status: "CLOSE",
-    location: "서울특별시",
-  },
-  {
-    board_id: 3,
-    user_id: 1,
-    title: "하재민 생일파티",
-    tag: ["기타"],
-    date: "2023-08-17",
-    time: "18:00",
-    currentPerson: 599,
-    maxPerson: 600,
-    status: "OPEN",
-    location: "경기도 시흥시",
-  },
-  {
-    board_id: 4,
-    user_id: 1,
-    title: "next.js 스터디",
-    tag: ["카공"],
-    date: "2023-08-17",
-    time: "18:00",
-    currentPerson: 6,
-    maxPerson: 10,
-    status: "OPEN",
-    location: "경기도 시흥시",
-  },
-];
+import { useState, useEffect } from "react";
+import { getBoards } from "@/utils/api";
+import { Board } from "@/types/boards";
+import { useQuery } from "@tanstack/react-query";
 
 const Boards = () => {
   const [selectedCategory, setSelectedCategory] = useState("전체");
@@ -64,6 +16,19 @@ const Boards = () => {
     OPEN: false,
     CLOSE: false,
   });
+
+  const { data: posts = [], isLoading } = useQuery({
+    queryKey: ["boards"],
+    queryFn: getBoards,
+    refetchOnWindowFocus: false, // 윈도우가 다시 포커스되었을때 데이터를 refetch
+    refetchOnMount: false, // 데이터가 stale 상태이면 컴포넌트가 마운트될 때 refetch
+    retry: 1, // API 요청 실패시 재시도 하는 옵션 (설정값 만큼 재시도)
+  });
+
+  useEffect(() => {
+    console.log("Loading:", isLoading);
+    console.log("Data:", posts);
+  }, [isLoading, posts]);
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
@@ -76,9 +41,16 @@ const Boards = () => {
     }));
   };
 
+
   const filteredData = dummyData.filter(data => {
     const categoryMatch =
       selectedCategory === "전체" || data.tag[0] === selectedCategory;
+
+  // 필터링된 데이터
+  const filteredData = posts.filter((data: Board) => {
+    const categoryMatch =
+      selectedCategory === "전체" || data.category === selectedCategory;
+
     const statusMatch =
       (selectedStatus.OPEN && data.status === "OPEN") ||
       (selectedStatus.CLOSE && data.status === "CLOSE") ||
@@ -109,6 +81,7 @@ const Boards = () => {
           <span className="text-xs">모집 종료</span>
         </button>
       </div>
+
       <div className="flex justify-center ">
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 xl:gap-8 py-[1.5rem]">
           {filteredData.map(data => (
@@ -125,6 +98,29 @@ const Boards = () => {
             />
           ))}
         </div>
+
+      <div className="flex justify-center">
+        {isLoading ? (
+          <p>Loading...</p> // 로딩 중 메시지
+        ) : (
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 xl:gap-8 py-[1.5rem]">
+            {filteredData.map((data: Board) => (
+              <PostPreview
+                key={data.id}
+                boardId={data.id}
+                title={data.title}
+                tag={[data.category]}
+                date={data.date}
+                time={data.startTime}
+                maxCapacity={data.maxCapacity}
+                locationName={data.location.locationName}
+                status={data.status}
+                currentPerson={data.currentPerson} // currentPerson 추가
+              />
+            ))}
+          </div>
+        )}
+
       </div>
     </main>
   );

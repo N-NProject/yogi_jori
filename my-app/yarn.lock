@@ -1573,6 +1573,7 @@ __metadata:
   languageName: node
   linkType: hard
 
+
 "@floating-ui/react@npm:^0.26.16, @floating-ui/react@npm:^0.26.2":
   version: 0.26.19
   resolution: "@floating-ui/react@npm:0.26.19"
@@ -1591,6 +1592,7 @@ __metadata:
   version: 0.2.4
   resolution: "@floating-ui/utils@npm:0.2.4"
   checksum: 10c0/154924b01157cb45cf305f4835d7f603e931dda8b00bbe52666729bccc5e7b99630e8b951333725e526d4e53d9b342976434ad5750b8b1da58728e3698bdcc2b
+
   languageName: node
   linkType: hard
 
@@ -1615,8 +1617,8 @@ __metadata:
   peerDependencies:
     react: ">= 16"
   checksum: 10c0/2f893d37f7a2c1e969b1d042ef1d5941847986f8bad77285318a73345c55dae1d423081f21f0fc8d5a6fe1899c41fcd98dc3c413d82e2a20374886bd720e4f34
-  languageName: node
-  linkType: hard
+
+
 
 "@humanwhocodes/config-array@npm:^0.11.14":
   version: 0.11.14
@@ -1824,13 +1826,7 @@ __metadata:
   dependencies:
     semver: "npm:^7.3.5"
   checksum: 10c0/c37a5b4842bfdece3d14dfdb054f73fe15ed2d3da61b34ff76629fb5b1731647c49166fd2a8bf8b56fcfa51200382385ea8909a3cbecdad612310c114d3f6c99
-  languageName: node
-  linkType: hard
 
-"@panva/hkdf@npm:^1.0.2":
-  version: 1.2.0
-  resolution: "@panva/hkdf@npm:1.2.0"
-  checksum: 10c0/b372707a1b11eef01561c366219a48795e8076f8a1b7d08dc9ab176a2b22f9be74e7a30d9de5e639b5c474ab15f65a424035a119d7ea70c3b815c5b1c87904ed
   languageName: node
   linkType: hard
 
@@ -2096,6 +2092,7 @@ __metadata:
   languageName: node
   linkType: hard
 
+
 "@tanstack/react-virtual@npm:3.5.0":
   version: 3.5.0
   resolution: "@tanstack/react-virtual@npm:3.5.0"
@@ -2112,8 +2109,42 @@ __metadata:
   version: 3.5.0
   resolution: "@tanstack/virtual-core@npm:3.5.0"
   checksum: 10c0/21a12049df81ce282054e8406cb74dd21d867aac077f31568ffdb08acd9aa171ae0666ceb43654895e73907acf5db02c7d651a66960da8acceeb2e034885e605
+
+"@tanstack/query-core@npm:5.50.1":
+  version: 5.50.1
+  resolution: "@tanstack/query-core@npm:5.50.1"
+  checksum: 10c0/4690750e70638fbfbcb686262f129c45e06314126bc651701f9cd57a77bd05cb9dad30b68cad960c35c790982750c294c9c340d25cb8a9a0916576d2e27569c0
   languageName: node
   linkType: hard
+
+"@tanstack/query-devtools@npm:5.50.1":
+  version: 5.50.1
+  resolution: "@tanstack/query-devtools@npm:5.50.1"
+  checksum: 10c0/ab88d8de5626ea140fda8f0e28394cadfa392105feafdf2fa09c09cfc5ff875c2b141ce2524123fc54a39d25ea9b5091658db785b337ae7a7a3a785469e3d647
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query-devtools@npm:^5.50.1":
+  version: 5.50.1
+  resolution: "@tanstack/react-query-devtools@npm:5.50.1"
+  dependencies:
+    "@tanstack/query-devtools": "npm:5.50.1"
+  peerDependencies:
+    "@tanstack/react-query": ^5.50.1
+    react: ^18 || ^19
+  checksum: 10c0/06d3177c0f872a58c095b4b97043555ac2bd0829dfd9572e376ae3279ed246c9546cef6f86a7786af28d1b4abf8573fa52e37b8b77465716791d9c7aee1c2122
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:^5.50.1":
+  version: 5.50.1
+  resolution: "@tanstack/react-query@npm:5.50.1"
+  dependencies:
+    "@tanstack/query-core": "npm:5.50.1"
+  peerDependencies:
+    react: ^18.0.0
+  checksum: 10c0/ccf33245bc4f83c20b93a629e64edd9976a4d397ee51ee442326955a387345ff2b2a3813955faef6d08fde732eebb40557944df8335d50838094b703e79f35f
+
 
 "@trysound/sax@npm:0.2.0":
   version: 0.2.0
@@ -2121,6 +2152,7 @@ __metadata:
   checksum: 10c0/44907308549ce775a41c38a815f747009ac45929a45d642b836aa6b0a536e4978d30b8d7d680bbd116e9dd73b7dbe2ef0d1369dcfc2d09e83ba381e485ecbe12
   languageName: node
   linkType: hard
+
 
 "@types/alpinejs@npm:^3":
   version: 3.13.10
@@ -2135,6 +2167,14 @@ __metadata:
   dependencies:
     "@types/sizzle": "npm:*"
   checksum: 10c0/7355b2b2cb44eba7a2afa4a1c653157e4bc055be1f14a4c8874e349e6860dd36ca237e538294c2d709f1ffa0d5b12a39ea97be179f3f7fb445e17e12949ccb33
+
+"@types/axios@npm:^0.14.0":
+  version: 0.14.0
+  resolution: "@types/axios@npm:0.14.0"
+  dependencies:
+    axios: "npm:*"
+  checksum: 10c0/f315a485b8069038a1bd8d7c064b84dc6f726dfaab4ef1a6602b0bd38bbf32a6903dc9282293caafefac38da5a0e938fa6623ce8dd173adb41864dac6cb83716
+
   languageName: node
   linkType: hard
 
@@ -2142,6 +2182,15 @@ __metadata:
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
   checksum: 10c0/6bf5337bc447b706bb5b4431d37686aa2ea6d07cfd6f79cc31de80170d6ff9b1c7384a9c0ccbc45b3f512bae9e9f75c2e12109806a15331dc94e8a8db6dbb4ac
+  languageName: node
+  linkType: hard
+
+"@types/next@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "@types/next@npm:9.0.0"
+  dependencies:
+    next: "npm:*"
+  checksum: 10c0/2148aadba745e6f094d33e483875656dece95e4049d7d99ce0ca0678035d1d48e73d6e2cba45e2b5fb0762bfd7b48587139d7ecf464876fb4fde9ff06cc249b8
   languageName: node
   linkType: hard
 
@@ -2615,7 +2664,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.7.2":
+
+
+"axios@npm:*, axios@npm:^1.7.2":
+
   version: 1.7.2
   resolution: "axios@npm:1.7.2"
   dependencies:
@@ -5200,8 +5252,15 @@ __metadata:
     "@headlessui/react": "npm:^2.0.4"
     "@heroicons/react": "npm:^2.1.4"
     "@svgr/webpack": "npm:^8.1.0"
+
     "@types/alpinejs": "npm:^3"
     "@types/jquery": "npm:^3.5.30"
+
+    "@tanstack/react-query": "npm:^5.50.1"
+    "@tanstack/react-query-devtools": "npm:^5.50.1"
+    "@types/axios": "npm:^0.14.0"
+    "@types/next": "npm:^9.0.0"
+
     "@types/node": "npm:^20"
     "@types/react": "npm:^18"
     "@types/react-datepicker": "npm:^6.2.0"
@@ -5261,6 +5320,7 @@ __metadata:
   languageName: node
   linkType: hard
 
+
 "next-auth@npm:^4.24.7":
   version: 4.24.7
   resolution: "next-auth@npm:4.24.7"
@@ -5286,7 +5346,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:^14.2.3":
+
+"next@npm:*, next@npm:^14.2.3":
+
   version: 14.2.3
   resolution: "next@npm:14.2.3"
   dependencies:
