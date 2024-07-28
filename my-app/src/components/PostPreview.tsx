@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
@@ -71,7 +73,7 @@ const PostPreview: React.FC<PostPreviewProps> = ({
 
   const handleClick = () => {
     if (isClient) {
-      //router.push(`/board/${board_id}`);
+      //router.push(`/post/${boardId}`);
     }
   };
 
