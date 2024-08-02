@@ -22,7 +22,7 @@ api.interceptors.request.use(
 export const getBoards = async () => {
   try {
     const response = await api.get("api/v1/boards");
-    return response.data;
+    return response.data.data;
   } catch (error) {
     console.error("Error fetching boards:", error);
     throw error;
