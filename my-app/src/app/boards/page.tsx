@@ -29,16 +29,16 @@ const Boards = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(4);
 
-  useEffect(() => {
-    const updateLimit = () => {
-      if (window.innerWidth >= 1280) {
-        setLimit(8);
-      } else {
-        setLimit(4);
-      }
-    };
+  const updateLimit = () => {
+    if (window.innerWidth >= 1280) {
+      setLimit(8);
+    } else {
+      setLimit(4);
+    }
+  };
 
-    updateLimit();
+  useEffect(() => {
+    updateLimit(); // 초기 로드 시 updateLimit 호출
     window.addEventListener("resize", updateLimit);
 
     return () => {
@@ -47,7 +47,7 @@ const Boards = () => {
   }, []);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["boards", page],
+    queryKey: ["boards", page, limit],
     queryFn: () => getBoards(page, limit),
     refetchOnWindowFocus: false,
     refetchOnMount: false,

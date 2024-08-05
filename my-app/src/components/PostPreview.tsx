@@ -24,7 +24,7 @@ interface PostPreviewProps {
 
 const tagColors: { [key: string]: string } = {
   커피챗: "bg-rose-100",
-  운동: "bg-blue-100",
+  카공: "bg-blue-100",
   기타: "bg-green-100",
   보드게임: "bg-yellow-100",
 };
