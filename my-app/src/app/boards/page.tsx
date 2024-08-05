@@ -130,6 +130,7 @@ const Boards = () => {
                 locationName={data.location.locationName}
                 status={data.status}
                 currentPerson={data.currentPerson}
+                link={`/post/${data.id}`}
               />
             ))}
           </div>

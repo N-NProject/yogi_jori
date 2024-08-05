@@ -1,35 +1,73 @@
 "use client";
 
-import React from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 import icons_chat from "@/assets/chat/icons_chat.svg";
 import close from "@/assets/chat/close.svg";
 import back from "@/assets/chat/icons_back.svg";
-import sample from "@/assets/chat/sample.svg";
-
+import token from "@/constants/loginToken";
 import PostPreview from "@/components/PostPreview";
 
-const dummyData = {
-  board_id: 1,
-  user_id: 1,
-  title: "커피챗",
-  tag: ["커피챗"],
-  date: "2023-08-17",
-  time: "18:00",
-  currentPerson: 22,
-  maxPerson: 100,
-  location: "경기도 시흥시",
+const fetchChatRooms = async () => {
+  const response = await axios.get(
+    "http://localhost:8000/api/v1/chatrooms/rooms",
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  return response.data;
+};
+
+const fetchChatRoomDetails = async (chatRoomId: number) => {
+  const response = await axios.get(
+    `http://localhost:8000/api/v1/chatrooms/${chatRoomId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+  return response.data;
 };
 
 const Chat = () => {
+  const [selectedChatRoom, setSelectedChatRoom] = useState<number | null>(null);
+  const {
+    data: chatRooms = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["chatRooms"],
+    queryFn: fetchChatRooms,
+  });
+
+  const {
+    data: chatRoomDetails,
+    isLoading: isLoadingDetails,
+    error: errorDetails,
+  } = useQuery({
+    queryKey: ["chatRoomDetails", selectedChatRoom],
+    queryFn: () => fetchChatRoomDetails(selectedChatRoom!),
+    enabled: !!selectedChatRoom,
+  });
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error fetching chat rooms</p>;
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error fetching chat rooms</p>;
+
   return (
     <div className="flex ">
       <main className="chat flex w-[100%] min-h-screen  ">
         <div className="chat_list flex flex-col  my-[1rem] bg-white xl:border-r  xl:w-[50rem] lg:w-[40rem] lg:border-r md:w-[30rem] md:border-r w-0">
           <div className="flex justify-between h-[4rem] mx-[1rem] mb-[1rem] ">
-
-            
             <div className="flex items-center">
               <Image src={icons_chat} alt="채팅 아이콘"></Image>
               <h1 className="text-[1.5rem] font-semibold ml-[0.5rem]">CHAT</h1>
@@ -40,19 +78,21 @@ const Chat = () => {
             </button>
           </div>
 
-          <ul className="px-[1rem] mx-[1em] ">
-            <PostPreview
-              key={dummyData.board_id}
-              board_id={dummyData.board_id}
-              title={dummyData.title}
-              tag={dummyData.tag}
-              date={dummyData.date}
-              time={dummyData.time}
-              currentPerson={dummyData.currentPerson}
-              maxPerson={dummyData.maxPerson}
-              location={dummyData.location}
-            />
-   
+          <ul className="px-[1rem] mx-[1em]">
+            {chatRooms.map((chatRoom: any) => (
+              <PostPreview
+                key={chatRoom.id}
+                board_id={chatRoom.id}
+                title={chatRoom.chat_name}
+                tag={["채팅방"]}
+                date={chatRoom.createdAt}
+                time={chatRoom.updatedAt}
+                currentPerson={chatRoom.member_count}
+                maxCapacity={chatRoom.max_member_count}
+                location="채팅방 위치 없음"
+                onClick={() => setSelectedChatRoom(chatRoom.id)}
+              />
+            ))}
           </ul>
         </div>
 
@@ -61,7 +101,7 @@ const Chat = () => {
             <div className="flex items-center">
               <Image src={icons_chat} alt="채팅 아이콘"></Image>
               <h1 className="text-[1.5rem] font-semibold ml-[0.5rem]">
-                {dummyData.title}
+                {chatRoomDetails?.chat_name}
               </h1>
             </div>
             <button>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import Link from "next/link";
 import Image from "next/image";
 import StudyInCafeImage from "@/assets/previewImages/StudyInCafe.png";
 import LocationIcon from "@/assets/previewImages/LocationIcon.png";
@@ -16,8 +16,10 @@ interface PostPreviewProps {
   time: string;
   maxCapacity: number;
   locationName: string;
-  status?: "OPEN" | "CLOSE";
+  status?: "OPEN" | "CLOSED";
   currentPerson: number;
+  link?: string; // 추가된 부분
+  onClick?: () => void; // 추가된 부분
 }
 
 const tagColors: { [key: string]: string } = {
@@ -37,14 +39,12 @@ const PostPreview: React.FC<PostPreviewProps> = ({
   locationName,
   status = "OPEN", // 기본값 설정
   currentPerson: initialCurrentPerson,
+  link,
+  onClick,
 }) => {
-  const [isClient, setIsClient] = useState(false);
   const [currentPerson, setCurrentPerson] = useState(initialCurrentPerson); // 초기 참여 인원 값 설정
-  //const router = useRouter();
 
   useEffect(() => {
-    setIsClient(true);
-
     if (boardId) {
       const eventSource = new EventSource(
         `http://localhost:8000/sse/board/${boardId}`,
@@ -71,17 +71,8 @@ const PostPreview: React.FC<PostPreviewProps> = ({
       ? tagColors[tag[0]] || "bg-lightgray"
       : "bg-lightgray";
 
-  const handleClick = () => {
-    if (isClient) {
-      //router.push(`/post/${boardId}`);
-    }
-  };
-
-  return (
-    <div
-      className="flex flex-row w-[30rem] xl:w-[32rem] h-32 bg-white rounded-3xl p-3 border border-1 border-lightgray cursor-pointer"
-      onClick={handleClick}
-    >
+  const content = (
+    <div className="flex flex-row w-[30rem] xl:w-[32rem] h-32 bg-white rounded-3xl p-3 border border-1 border-lightgray cursor-pointer">
       <Image
         src={StudyInCafeImage}
         alt="Study In Cafe Preview Image"
@@ -141,6 +132,15 @@ const PostPreview: React.FC<PostPreviewProps> = ({
       </div>
     </div>
   );
-};
 
+  if (link) {
+    return (
+      <Link href={link} passHref>
+        {content}
+      </Link>
+    );
+  }
+
+  return <div onClick={onClick}>{content}</div>;
+};
 export default PostPreview;
