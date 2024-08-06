@@ -2,28 +2,56 @@
 
 import PostPreview from "@/components/PostPreview";
 import MainTab from "@/components/MainTab";
+import axios from "axios";
 import { useState, useEffect } from "react";
-import { getBoards } from "@/utils/api";
-import { Board } from "@/types/boards";
 import { useQuery } from "@tanstack/react-query";
+import { Board } from "@/types/boards";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+
+const getBoards = async (page: number, limit: number) => {
+  const res = await axios.get("http://localhost:8000/api/v1/boards/", {
+    params: { page, limit },
+    withCredentials: true,
+  });
+  return res.data;
+};
 
 const Boards = () => {
   const [selectedCategory, setSelectedCategory] = useState("전체");
-  const [selectedStatus, setSelectedStatus] = useState<{
-    OPEN: boolean;
-    CLOSE: boolean;
-  }>({
-    OPEN: false,
-    CLOSE: false,
+  const [selectedStatus, setSelectedStatus] = useState<"OPEN" | "CLOSED" | "">(
+    "",
+  );
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(4);
+
+  const updateLimit = () => {
+    if (window.innerWidth >= 1280) {
+      setLimit(8);
+    } else {
+      setLimit(4);
+    }
+  };
+
+  useEffect(() => {
+    updateLimit(); // 초기 로드 시 updateLimit 호출
+    window.addEventListener("resize", updateLimit);
+
+    return () => {
+      window.removeEventListener("resize", updateLimit);
+    };
+  }, []);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["boards", page, limit],
+    queryFn: () => getBoards(page, limit),
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    retry: 1,
   });
 
-  const { data: posts = [], isLoading } = useQuery({
-    queryKey: ["boards"],
-    queryFn: getBoards,
-    refetchOnWindowFocus: false, // 윈도우가 다시 포커스되었을때 데이터를 refetch
-    refetchOnMount: false, // 데이터가 stale 상태이면 컴포넌트가 마운트될 때 refetch
-    retry: 1, // API 요청 실패시 재시도 하는 옵션 (설정값 만큼 재시도)
-  });
+  const posts = data?.data || [];
+  const totalPage = data?.totalPage || 0;
 
   useEffect(() => {
     console.log("Loading:", isLoading);
@@ -34,29 +62,25 @@ const Boards = () => {
     setSelectedCategory(category);
   };
 
-  const handleStatusChange = (status: "OPEN" | "CLOSE") => {
-    setSelectedStatus(prevStatus => ({
-      ...prevStatus,
-      [status]: !prevStatus[status],
-    }));
+  const handleStatusChange = (status: "OPEN" | "CLOSED") => {
+    setSelectedStatus(prevStatus => (prevStatus === status ? "" : status));
   };
 
-
-  const filteredData = dummyData.filter(data => {
-    const categoryMatch =
-      selectedCategory === "전체" || data.tag[0] === selectedCategory;
-
-  // 필터링된 데이터
   const filteredData = posts.filter((data: Board) => {
     const categoryMatch =
       selectedCategory === "전체" || data.category === selectedCategory;
 
-    const statusMatch =
-      (selectedStatus.OPEN && data.status === "OPEN") ||
-      (selectedStatus.CLOSE && data.status === "CLOSE") ||
-      (!selectedStatus.OPEN && !selectedStatus.CLOSE);
+    const statusMatch = selectedStatus === "" || data.status === selectedStatus;
+
     return categoryMatch && statusMatch;
   });
+
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number,
+  ) => {
+    setPage(value);
+  };
 
   return (
     <main className="flex min-h-screen flex-col bg-white">
@@ -67,43 +91,29 @@ const Boards = () => {
         <button
           onClick={() => handleStatusChange("OPEN")}
           className={`w-[5rem] lg:w-[6.25rem] h-[2rem] lg:h-[2.25rem] border border-1 rounded-[1.25rem] ${
-            selectedStatus.OPEN ? "border-darkpink bg-pink" : "border-gray"
+            selectedStatus === "OPEN"
+              ? "border-darkpink bg-pink"
+              : "border-gray"
           }`}
         >
           <span className="text-xs">모집 중</span>
         </button>
         <button
-          onClick={() => handleStatusChange("CLOSE")}
+          onClick={() => handleStatusChange("CLOSED")}
           className={`w-[5rem] lg:w-[6.25rem] h-[2rem] lg:h-[2.25rem] border border-1 rounded-[1.25rem] ${
-            selectedStatus.CLOSE ? "border-darkpink bg-pink" : "border-gray"
+            selectedStatus === "CLOSED"
+              ? "border-darkpink bg-pink"
+              : "border-gray"
           }`}
         >
           <span className="text-xs">모집 종료</span>
         </button>
       </div>
-
-      <div className="flex justify-center ">
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 xl:gap-8 py-[1.5rem]">
-          {filteredData.map(data => (
-            <PostPreview
-              key={data.board_id}
-              board_id={data.board_id}
-              title={data.title}
-              tag={data.tag}
-              date={data.date}
-              time={data.time}
-              currentPerson={data.currentPerson}
-              maxPerson={data.maxPerson}
-              location={data.location}
-            />
-          ))}
-        </div>
-
       <div className="flex justify-center">
         {isLoading ? (
-          <p>Loading...</p> // 로딩 중 메시지
+          <p>Loading...</p>
         ) : (
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 xl:gap-8 py-[1.5rem]">
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 xl:gap-6 py-[1.5rem]">
             {filteredData.map((data: Board) => (
               <PostPreview
                 key={data.id}
@@ -115,12 +125,24 @@ const Boards = () => {
                 maxCapacity={data.maxCapacity}
                 locationName={data.location.locationName}
                 status={data.status}
-                currentPerson={data.currentPerson} // currentPerson 추가
+                currentPerson={data.currentPerson}
+                link={`/post/${data.id}`}
               />
             ))}
           </div>
         )}
-
+      </div>
+      <div className="fixed bottom-16 sm:bottom-2 w-full py-2">
+        <Stack
+          spacing={2}
+          className="flex justify-center items-center sm:mr-[5rem]"
+        >
+          <Pagination
+            count={totalPage}
+            page={page}
+            onChange={handlePageChange}
+          />
+        </Stack>
       </div>
     </main>
   );
