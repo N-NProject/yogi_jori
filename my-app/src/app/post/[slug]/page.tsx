@@ -17,6 +17,7 @@ declare global {
 };
 
 const Post = ({ params }: { params: { slug: number } }) => {
+  const [currentPerson, setCurrentPerson] = useState<Number>(0);
   const [locationAddress, setLocationAddress] = useState<String>("");
   const [postData, setPostData] = useState<Object>({});
   const [showModal, setShowModal] = useState(false)
@@ -151,6 +152,22 @@ const Post = ({ params }: { params: { slug: number } }) => {
 
   useEffect(() => {
     getMutation.mutate(params.slug);
+
+    const eventSource = new EventSource(`http://localhost:8000/sse/board/${params.slug}`);
+
+    eventSource.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      setCurrentPerson(data.currentPerson);
+    };
+
+    eventSource.onerror = error => {
+      console.error("EventSource failed:", error);
+      eventSource.close();
+    };
+
+    return () => {
+      eventSource.close();
+    };
   }, []);
 
   return (
@@ -192,7 +209,7 @@ const Post = ({ params }: { params: { slug: number } }) => {
                 인원
               </p>
               <p className="inline-block ml-3 text-lg">
-                {postData.currentPerson} / {postData.maxCapacity}
+                {currentPerson} / {postData.maxCapacity}
               </p>
             </div>
             <div className="mb-5">
@@ -219,7 +236,7 @@ const Post = ({ params }: { params: { slug: number } }) => {
               <button className="h-fit bg-darkpink text-lg font-semibold text-white rounded-lg py-2 md:px-20 px-10 cursor-pointer" onClick={clickEditButton}>수정</button>
               <button className="h-fit bg-darkpink text-lg font-semibold text-white rounded-lg py-2 md:px-20 px-10 cursor-pointer" onClick={clickDeleteButton}>삭제</button>
             </div> :
-            <button className="h-fit bg-darkpink text-lg font-semibold text-white rounded-lg py-2 px-20 cursor-pointer" onClick={clickJoinButton}>지금 당장 참여하기 ({postData.currentPerson}/{postData.maxCapacity})</button>
+            <button className="h-fit bg-darkpink text-lg font-semibold text-white rounded-lg py-2 px-20 cursor-pointer" onClick={clickJoinButton}>지금 당장 참여하기 ({currentPerson}/{postData.maxCapacity})</button>
           }
         </div>
       </div>
