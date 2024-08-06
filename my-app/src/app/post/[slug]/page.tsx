@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import BackgroundImage from "@/assets/post/background.png";
 import MegaphoneImage from "@/assets/post/megaphone.png";
-import token from "@/constants/loginToken";
 import EditModalBox from "@/components/EditModalBox";
 
 declare global {

@@ -6,7 +6,6 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Board } from "@/types/boards";
-import token from "@/constants/loginToken";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 

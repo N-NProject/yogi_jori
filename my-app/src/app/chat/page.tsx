@@ -7,7 +7,6 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import io from "socket.io-client";
 import icons_chat from "@/assets/chat/icons_chat.svg";
 import back from "@/assets/chat/icons_back.svg";
-import token from "@/constants/loginToken";
 import PostPreview from "@/components/PostPreview";
 
 const fetchChatRooms = async ({ queryKey }) => {

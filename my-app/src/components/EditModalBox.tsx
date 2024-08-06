@@ -7,7 +7,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import CloseOnIcon from "@/assets/post/closeOn.svg";
 import CloseOffIcon from "@/assets/post/closeOff.svg";
-import token from "@/constants/loginToken";
 import Image from "next/image";
 import EditModalBoxProps from "@/types/EditModalBoxProps";
 
