@@ -19,9 +19,6 @@ const fetchChatRooms = async ({ queryKey }) => {
         afterCursor,
         beforeCursor,
       },
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
       withCredentials: true,
     },
   );
@@ -33,9 +30,6 @@ const fetchChatRoomDetails = async (chatRoomId: number) => {
   const response = await axios.get(
     `http://localhost:8000/api/v1/chatrooms/${chatRoomId}`,
     {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
       withCredentials: true,
     },
   );
@@ -48,9 +42,6 @@ const sendMessage = async ({ chatRoomId, content }) => {
     `http://localhost:8000/api/v1/chatrooms/${chatRoomId}/messages`,
     { content },
     {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
       withCredentials: true,
     },
   );
@@ -61,9 +52,6 @@ const leaveChatRoom = async (chatRoomId: number) => {
   const response = await axios.delete(
     `http://localhost:8000/api/v1/chatrooms/${chatRoomId}/leave`,
     {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
       withCredentials: true,
     },
   );

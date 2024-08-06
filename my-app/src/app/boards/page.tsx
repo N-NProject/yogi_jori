@@ -12,11 +12,8 @@ import Stack from "@mui/material/Stack";
 
 const getBoards = async (page: number, limit: number) => {
   const res = await axios.get("http://localhost:8000/api/v1/boards/", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
     params: { page, limit },
+    withCredentials: true,
   });
   return res.data;
 };
