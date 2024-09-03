@@ -12,6 +12,6 @@ export interface Board {
   maxCapacity: number;
   date: string;
   startTime: string;
-  status?: "OPEN" | "CLOSE";
+  status?: "OPEN" | "CLOSED";
   currentPerson: number;
 }
