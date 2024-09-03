@@ -18,7 +18,7 @@ const Write = () => {
   const [view, setView] = useState(false);
   const [person, setPerson] = useState<number>();
   const [category, setCategory] = useState<String>();
-  const personItems = Array.from({ length: 15 }, (_, index) => index + 1);
+  const personItems = Array.from({ length: 14 }, (_, index) => index + 2);
   const [lat, setLat] = useState<number>(0);
   const [lng, setLng] = useState<number>(0);
 

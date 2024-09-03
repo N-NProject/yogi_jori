@@ -23,7 +23,7 @@ const EditModalBox = ({ postData, clickModal }): EditModalBoxProps => {
   const [view, setView] = useState(false);
   const [person, setPerson] = useState<number>(postData.maxCapacity);
   const [category, setCategory] = useState<String>(postData.category);
-  const personItems = Array.from({ length: 15 }, (_, index) => index + 1);
+  const personItems = Array.from({ length: 14 }, (_, index) => index + 2);
   const [lat, setLat] = useState<number>(postData.location?.latitude);
   const [lng, setLng] = useState<number>(postData.location?.longitude);
   const [isHovered, setIsHovered] = useState(false);
