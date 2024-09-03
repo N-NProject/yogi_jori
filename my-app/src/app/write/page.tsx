@@ -36,12 +36,15 @@ const Write = () => {
   }
   const mutation = useMutation({
     mutationFn: async (newPost) => {
-      const res = await axios.post('http://localhost:8000/api/v1/boards', newPost, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
+      const res = await axios.post('http://localhost:8000/api/v1/boards', 
+        newPost, 
+        {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
       return res.data;
     },

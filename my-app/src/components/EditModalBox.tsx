@@ -29,12 +29,15 @@ const EditModalBox = ({postData, clickModal}) : EditModalBoxProps => {
 
   const mutation = useMutation({
     mutationFn: async (editedPost) => {
-      const res = await axios.patch(`http://localhost:8000/api/v1/boards/${postData.id}`, editedPost, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
+      const res = await axios.patch(`http://localhost:8000/api/v1/boards/${postData.id}`,
+        editedPost, 
+        {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
       return res.data;
     },

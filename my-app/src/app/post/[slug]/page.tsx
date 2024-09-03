@@ -27,7 +27,7 @@ const Post = ({ params }: { params: { slug: number } }) => {
     const res = await axios.get(`http://localhost:8000/api/v1/boards/${id}`, 
       { withCredentials: true }
     );
-
+    console.log(res.data)
     return res.data;
   };
 
