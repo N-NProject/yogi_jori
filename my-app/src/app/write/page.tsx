@@ -34,13 +34,15 @@ const Write = () => {
     }
   }
   const mutation = useMutation({
-    mutationFn: async newPost => {
-      const res = await axios.post(
-        "http://localhost:8000/api/v1/boards",
-        newPost,
+    mutationFn: async (newPost) => {
+      const res = await axios.post('http://localhost:8000/api/v1/boards', 
+        newPost, 
         {
           withCredentials: true,
-        },
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
       );
 
       return res.data;
@@ -101,7 +103,6 @@ const Write = () => {
   }, [view]);
 
   useEffect(() => {
-    // 카카오맵 api를 사용하기 위해 Head 부분에 script 태그 추가하기
     const kakaoMapScript = document.createElement("script");
     kakaoMapScript.async = false;
     kakaoMapScript.type = "text/javascript";
@@ -110,7 +111,6 @@ const Write = () => {
 
     const onLoadKakaoAPI = () => {
       window.kakao.maps.load(() => {
-        // 장소 검색 서비스를 초기화합니다.
         const ps = new window.kakao.maps.services.Places();
         const keywordInput = document.getElementById(
           "location",
@@ -119,7 +119,6 @@ const Write = () => {
           "result-list",
         ) as HTMLElement;
 
-        // 키워드 입력 이벤트 리스너
         keywordInput.addEventListener("keyup", function () {
           const keyword = keywordInput.value;
 
@@ -154,7 +153,6 @@ const Write = () => {
           });
         });
 
-        // 장소 검색 결과를 리스트로 표시하는 함수
         function displayPlaces(places: any[]) {
           resultList.innerHTML = "";
 

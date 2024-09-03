@@ -29,13 +29,15 @@ const EditModalBox = ({ postData, clickModal }): EditModalBoxProps => {
   const [isHovered, setIsHovered] = useState(false);
 
   const mutation = useMutation({
-    mutationFn: async editedPost => {
-      const res = await axios.patch(
-        `http://localhost:8000/api/v1/boards/${postData.id}`,
-        editedPost,
+    mutationFn: async (editedPost) => {
+      const res = await axios.patch(`http://localhost:8000/api/v1/boards/${postData.id}`,
+        editedPost, 
         {
           withCredentials: true,
-        },
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
       );
 
       return res.data;
@@ -79,7 +81,7 @@ const EditModalBox = ({ postData, clickModal }): EditModalBoxProps => {
     console.log(request);
     mutation.mutate(request);
   };
-  // 자식 노드를 모두 삭제하는 함수
+
   function removeAllResultItems(parent, child) {
     if (parent) {
       const resultItems = parent.getElementsByClassName(child);
@@ -109,7 +111,7 @@ const EditModalBox = ({ postData, clickModal }): EditModalBoxProps => {
   }, [view]);
 
   useEffect(() => {
-    // 카카오맵 api를 사용하기 위해 Head 부분에 script 태그 추가하기
+
     const kakaoMapScript = document.createElement("script");
     kakaoMapScript.async = false;
     kakaoMapScript.type = "text/javascript";
@@ -118,7 +120,7 @@ const EditModalBox = ({ postData, clickModal }): EditModalBoxProps => {
 
     const onLoadKakaoAPI = () => {
       window.kakao.maps.load(() => {
-        // 장소 검색 서비스를 초기화합니다.
+
         const ps = new window.kakao.maps.services.Places();
         const keywordInput = document.getElementById(
           "location",
@@ -127,7 +129,7 @@ const EditModalBox = ({ postData, clickModal }): EditModalBoxProps => {
           "result-list",
         ) as HTMLElement;
 
-        // 키워드 입력 이벤트 리스너
+
         keywordInput.addEventListener("keyup", function () {
           const keyword = keywordInput.value;
 
@@ -162,7 +164,6 @@ const EditModalBox = ({ postData, clickModal }): EditModalBoxProps => {
           });
         });
 
-        // 장소 검색 결과를 리스트로 표시하는 함수
         function displayPlaces(places: any[]) {
           resultList.innerHTML = "";
 

@@ -16,6 +16,7 @@ declare global {
 }
 
 const Post = ({ params }: { params: { slug: number } }) => {
+  const [currentPerson, setCurrentPerson] = useState<Number>(0);
   const [locationAddress, setLocationAddress] = useState<String>("");
   const [postData, setPostData] = useState<Object>({});
   const [showModal, setShowModal] = useState(false);
@@ -23,19 +24,17 @@ const Post = ({ params }: { params: { slug: number } }) => {
   const router = useRouter();
 
   const getPostData = async id => {
-    const res = await axios.get(`http://localhost:8000/api/v1/boards/${id}`, {
-      withCredentials: true,
-    });
-
+    const res = await axios.get(`http://localhost:8000/api/v1/boards/${id}`, 
+      { withCredentials: true }
+    );
+    console.log(res.data)
     return res.data;
   };
 
   const deletePostData = async id => {
     const res = await axios.delete(
       `http://localhost:8000/api/v1/boards/${id}`,
-      {
-        withCredentials: true,
-      },
+      { withCredentials: true }
     );
 
     return res.data;
@@ -43,13 +42,9 @@ const Post = ({ params }: { params: { slug: number } }) => {
 
   const joinChatRoom = async id => {
     const res = await axios.post(
-      `http://localhost:8000/api/v1/chatrooms/join`,
-      {
-        params: {
-          boardId: id,
-        },
-        withCredentials: true,
-      },
+      `http://localhost:8000/api/v1/chatrooms/join/${id}`,
+      {},
+      { withCredentials: true }
     );
 
     return res.data;
@@ -58,8 +53,8 @@ const Post = ({ params }: { params: { slug: number } }) => {
   const getMutation = useMutation({
     mutationFn: getPostData,
     onSuccess: data => {
-      console.log(data);
       setPostData(data);
+      setCurrentPerson(data.currentCapacity);
       loadKakaoMap(data.location.latitude, data.location.longitude);
     },
     onError: error => {
@@ -70,7 +65,6 @@ const Post = ({ params }: { params: { slug: number } }) => {
   const deleteMutation = useMutation({
     mutationFn: deletePostData,
     onSuccess: data => {
-      console.log(data);
       router.push(`/`);
     },
     onError: error => {
@@ -81,7 +75,7 @@ const Post = ({ params }: { params: { slug: number } }) => {
   const joinMutation = useMutation({
     mutationFn: joinChatRoom,
     onSuccess: data => {
-      console.log(data);
+      // console.log(data);
       //router.push(`/`);
     },
     onError: error => {
@@ -102,7 +96,6 @@ const Post = ({ params }: { params: { slug: number } }) => {
   };
 
   const loadKakaoMap = (latitude, longitude) => {
-    // 카카오맵 api를 사용하기 위해 Head 부분에 script 태그 추가하기
     const kakaoMapScript = document.createElement("script");
     kakaoMapScript.async = false;
     kakaoMapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=4b5f228cb3b8bf6903521cc0f6f67769&autoload=false&libraries=services`;
@@ -110,33 +103,28 @@ const Post = ({ params }: { params: { slug: number } }) => {
 
     const onLoadKakaoAPI = () => {
       window.kakao.maps.load(() => {
-        const position = new window.kakao.maps.LatLng(latitude, longitude); // 지도에 표시할 위치
+        const position = new window.kakao.maps.LatLng(latitude, longitude);
 
-        // 이미지 지도에 표시할 마커입니다
-        // 이미지 지도에 표시할 마커는 Object 형태입니다
         const marker = {
           position: position,
         };
 
-        // 이미지 지도를 표시할 div
         const staticMapContainer = document.getElementById("staticMap"),
           staticMapOption = {
-            center: position, // 이미지 지도의 중심좌표
-            level: 3, // 이미지 지도의 확대 레벨
+            center: position,
+            level: 3,
             marker: marker,
           };
 
-        // 이미지 지도를 표시할 div와 옵션으로 이미지 지도를 생성합니다
         const staticMap = new window.kakao.maps.StaticMap(
           staticMapContainer,
           staticMapOption,
         );
 
-        // 주소-좌표 변환 객체를 생성합니다
         const geocoder = new window.kakao.maps.services.Geocoder();
         console.log(postData.location?.longitude);
         console.log(postData.location?.latitude);
-        // 좌표로 법정동 상세 주소 정보를 요청합니다
+
         geocoder.coord2Address(longitude, latitude, function (result, status) {
           if (status === window.kakao.maps.services.Status.OK) {
             setLocationAddress(result[0].address.address_name);
@@ -150,6 +138,22 @@ const Post = ({ params }: { params: { slug: number } }) => {
 
   useEffect(() => {
     getMutation.mutate(params.slug);
+
+    const eventSource = new EventSource(`http://localhost:8000/sse/board/${params.slug}`);
+
+    eventSource.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      setCurrentPerson(data.currentPerson);
+    };
+
+    eventSource.onerror = error => {
+      console.error("EventSource failed:", error);
+      eventSource.close();
+    };
+
+    return () => {
+      eventSource.close();
+    };
   }, []);
 
   return (
@@ -196,7 +200,7 @@ const Post = ({ params }: { params: { slug: number } }) => {
                 인원
               </p>
               <p className="inline-block ml-3 text-lg">
-                {postData.currentPerson} / {postData.maxCapacity}
+                {currentPerson} / {postData.maxCapacity}
               </p>
             </div>
             <div className="mb-5">
@@ -247,8 +251,7 @@ const Post = ({ params }: { params: { slug: number } }) => {
               className="h-fit bg-darkpink text-lg font-semibold text-white rounded-lg py-2 px-20 cursor-pointer"
               onClick={clickJoinButton}
             >
-              지금 당장 참여하기 ({postData.currentPerson}/
-              {postData.maxCapacity})
+              지금 당장 참여하기 ({currentPerson}/{postData.maxCapacity})
             </button>
           )}
         </div>
