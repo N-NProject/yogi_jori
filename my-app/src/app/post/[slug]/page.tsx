@@ -78,12 +78,11 @@ const Post = ({ params }: { params: { slug: number } }) => {
   const joinMutation = useMutation({
     mutationFn: joinChatRoom,
     onSuccess: data => {
-      // console.log(data);
-      //router.push(`/`);
+      router.push(`/chat/${data.chatRoomId}`);
     },
     onError: error => {
       console.log(error.message);
-    },
+    }
   });
 
   const clickEditButton = () => {
