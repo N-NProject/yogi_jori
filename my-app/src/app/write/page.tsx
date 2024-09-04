@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+import api from "@/utils/api";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -35,7 +35,7 @@ const Write = () => {
   }
   const mutation = useMutation({
     mutationFn: async (newPost) => {
-      const res = await axios.post('http://localhost:8000/api/v1/boards', 
+      const res = await api.post('/api/v1/boards', 
         newPost, 
         {
           withCredentials: true,

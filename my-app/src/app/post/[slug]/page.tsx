@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import api from "@/utils/api";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import BackgroundImage from "@/assets/post/background.png";
@@ -15,7 +15,7 @@ declare global {
   }
 }
 const getPostData = async id => {
-  const res = await axios.get(`http://localhost:8000/api/v1/boards/${id}`, 
+  const res = await api.get(`/api/v1/boards/${id}`, 
     { withCredentials: true }
   );
   console.log(res.data)
@@ -33,8 +33,8 @@ const Post = ({ params }: { params: { slug: number } }) => {
   
 
   const deletePostData = async id => {
-    const res = await axios.delete(
-      `http://localhost:8000/api/v1/boards/${id}`,
+    const res = await api.delete(
+      `/api/v1/boards/${id}`,
       { withCredentials: true }
     );
 
@@ -42,8 +42,8 @@ const Post = ({ params }: { params: { slug: number } }) => {
   };
 
   const joinChatRoom = async id => {
-    const res = await axios.post(
-      `http://localhost:8000/api/v1/chatrooms/join/${id}`,
+    const res = await api.post(
+      `/api/v1/chatrooms/join/${id}`,
       {},
       { withCredentials: true }
     );

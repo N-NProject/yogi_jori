@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import api from "@/utils/api";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import CloseOnIcon from "@/assets/post/closeOn.svg";
@@ -30,7 +30,7 @@ const EditModalBox = ({ postData, clickModal }): EditModalBoxProps => {
 
   const mutation = useMutation({
     mutationFn: async (editedPost) => {
-      const res = await axios.patch(`http://localhost:8000/api/v1/boards/${postData.id}`,
+      const res = await api.patch(`/api/v1/boards/${postData.id}`,
         editedPost, 
         {
           withCredentials: true,
@@ -44,7 +44,7 @@ const EditModalBox = ({ postData, clickModal }): EditModalBoxProps => {
     },
     onSuccess: data => {
       clickModal();
-      //location.reload();
+      location.reload();
     },
     onError: error => {
       console.log(error.message);
