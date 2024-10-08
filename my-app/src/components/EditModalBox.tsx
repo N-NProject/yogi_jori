@@ -111,6 +111,9 @@ const EditModalBox = ({ postData, clickModal }): EditModalBoxProps => {
   }, [view]);
 
   useEffect(() => {
+    const calendarHeader = document.getElementsByClassName("react-datepicker__header ");
+    console.log(calendarHeader);
+    // calendarHeader[0].classList.add("bg-pink");
 
     const kakaoMapScript = document.createElement("script");
     kakaoMapScript.async = false;
@@ -136,7 +139,7 @@ const EditModalBox = ({ postData, clickModal }): EditModalBoxProps => {
           if (!keyword.trim()) {
             resultList.innerHTML = "";
             resultList.classList.remove(
-              "h-18rem]",
+              "h-[18rem]",
               "bg-white",
               "border",
               "border-[1px]",
@@ -147,19 +150,20 @@ const EditModalBox = ({ postData, clickModal }): EditModalBoxProps => {
           }
 
           ps.keywordSearch(keyword, function (data: any[], status: string) {
+            resultList.classList.add(
+              "h-[18rem]",
+              "bg-white",
+              "border",
+              "border-[1px]",
+              "rounded-[3px]",
+              "border-zinc-300",
+            );
+
             if (status === window.kakao.maps.services.Status.OK) {
               displayPlaces(data);
             } else {
               resultList.innerHTML =
                 '<div class="result-item mt-2">검색 결과가 없습니다.</div>';
-              resultList.classList.add(
-                "h-[18rem]",
-                "bg-white",
-                "border",
-                "border-[1px]",
-                "rounded-[3px]",
-                "border-zinc-300",
-              );
             }
           });
         });
@@ -170,7 +174,7 @@ const EditModalBox = ({ postData, clickModal }): EditModalBoxProps => {
           places.forEach(function (place) {
             const listItem = document.createElement("div");
             listItem.className =
-              "result-item h-16 flex flex-col justify-center";
+              "result-item h-16 bg-white flex flex-col justify-center";
 
             const placeName = document.createElement("p");
             placeName.innerText = place.place_name;
@@ -211,7 +215,7 @@ const EditModalBox = ({ postData, clickModal }): EditModalBoxProps => {
       onClick={clickModal}
     >
       <div
-        className="flex flex-col relative md:w-[33rem] w-[25rem] h-[45rem] items-center justify-center bg-white rounded-[10px] px-8 py-6"
+        className="flex flex-col relative md:w-[33rem] w-[23rem] h-[40rem] items-center justify-center bg-white rounded-[10px] px-8 py-6"
         onClick={e => e.stopPropagation()}
       >
         <div
@@ -228,8 +232,8 @@ const EditModalBox = ({ postData, clickModal }): EditModalBoxProps => {
             priority
           />
         </div>
-        <h1 className="text-darkpink font-semibold text-2xl">수정하기</h1>
-        <div className="flex flex-col items-center md:w-[30rem] w-[22rem] space-y-4 my-10">
+        <h1 className="text-darkpink font-semibold text-2xl pt-5">수정하기</h1>
+        <div className="flex flex-col items-center md:w-[30rem] w-[20rem] space-y-4 my-5">
           <input
             type="text"
             id="title"
@@ -238,17 +242,18 @@ const EditModalBox = ({ postData, clickModal }): EditModalBoxProps => {
             className="placeholder:text-zinc-500 text-slate-800 border-[1.5px] border-solid border-pink outline-darkpink rounded-[3px] h-11 w-full px-4 py-2.5 font-semibold text-sm"
           />
           <div className="flex md:flex-row flex-col justify-between w-full relative">
-            <DatePicker
-              showTimeInput
-              dateFormat="yyyy / MM / dd"
-              shouldCloseOnSelect
-              minDate={new Date()}
-              selected={selectedDate}
-              onChange={date => setSelectedDate(date)}
-              placeholderText="날짜를 선택해주세요."
-              className="placeholder:text-zinc-500 border-[1.5px] border-solid border-pink outline-darkpink rounded-[3px] h-11 w-full px-4 py-2.5 font-semibold text-sm"
-              calendarClassName="bg-pink"
-            />
+          <DatePicker
+            dateFormat="yyyy / MM / dd"
+            shouldCloseOnSelect
+            minDate={new Date()}
+            selected={selectedDate}
+            onChange={date => setSelectedDate(date)}
+            placeholderText="날짜를 선택해주세요."
+            className="placeholder:text-zinc-500 border-[1.5px] border-solid border-pink outline-darkpink rounded-[3px] z-30 h-11 w-full px-4 py-2.5 font-semibold text-sm"
+            calendarClassName="bg-pink"
+            withPortal
+          />
+            
             <div className="flex md:flex-row justify-between md:mt-0 mt-4">
               <input
                 type="time"
@@ -258,7 +263,7 @@ const EditModalBox = ({ postData, clickModal }): EditModalBoxProps => {
               />
               <div className="relative">
                 <div
-                  className={`bg-white absolute border-solid rounded-[3px] h-50 right-0 z-10 max-w-[10rem] cursor-pointer w-24 px-4 py-2.5 font-semibold text-sm text-zinc-500
+                  className={`bg-white absolute border-solid rounded-[3px] h-50 right-0 max-w-[10rem] cursor-pointer w-24 px-4 py-2.5 font-semibold text-sm text-zinc-500
                   ${
                     view
                       ? "border-darkpink border-[2px]"
@@ -272,7 +277,7 @@ const EditModalBox = ({ postData, clickModal }): EditModalBoxProps => {
                 </div>
                 <div
                   id="personList"
-                  className="hidden absolute top-full z-[1000] overflow-auto h-56 bg-white border border-[1.5px] border-pink border-solid rounded-[3px] right-0 max-w-[10rem] w-24"
+                  className="hidden absolute top-full z-20 overflow-auto h-56 bg-white border border-[1.5px] border-pink border-solid rounded-[3px] right-0 max-w-[10rem] w-24"
                 >
                   <>
                     {personItems.map((item, index) => (
@@ -337,7 +342,7 @@ const EditModalBox = ({ postData, clickModal }): EditModalBoxProps => {
               id="location"
               placeholder="만날 장소를 입력해주세요."
               defaultValue={postData.location.locationName}
-              className="placeholder:text-zinc-500 text-slate-800 border-[1.5px] border-solid border-pink outline-darkpink rounded-[3px] h-11 w-full px-4 py-2.5 font-semibold text-sm"
+              className="placeholder:text-zinc-500 text-slate-800 border-[1.5px] border-solid border-pink outline-darkpink rounded-[3px] z-10 h-11 w-full px-4 py-2.5 font-semibold text-sm"
             />
             <div
               id="result-list"

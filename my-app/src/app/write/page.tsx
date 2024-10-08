@@ -136,19 +136,20 @@ const Write = () => {
           }
 
           ps.keywordSearch(keyword, function (data: any[], status: string) {
+            resultList.classList.add(
+              "h-[18rem]",
+              "bg-white",
+              "border",
+              "border-[1px]",
+              "rounded-[3px]",
+              "border-zinc-300",
+            );
+
             if (status === window.kakao.maps.services.Status.OK) {
               displayPlaces(data);
             } else {
               resultList.innerHTML =
                 '<div class="result-item mt-2">검색 결과가 없습니다.</div>';
-              resultList.classList.add(
-                "h-[18rem]",
-                "bg-white",
-                "border",
-                "border-[1px]",
-                "rounded-[3px]",
-                "border-zinc-300",
-              );
             }
           });
         });
@@ -206,9 +207,9 @@ const Write = () => {
         />
         <div className="flex md:flex-row flex-col justify-between w-full relative">
           <DatePicker
-            showTimeInput
             dateFormat="yyyy / MM / dd"
             shouldCloseOnSelect
+            withPortal
             minDate={new Date()}
             selected={selectedDate}
             onChange={date => setSelectedDate(date)}
