@@ -177,7 +177,7 @@ const MyPage = () => {
         {/* 로그아웃 버튼 추가 */}
         <button
           onClick={handleLogout}
-          className="w-[22.5rem] h-[3rem] rounded-[0.25rem] mb-7  bg-red-400 hover:bg-red-700"
+       className="w-[22.5rem] h-[3rem] rounded-[0.25rem] mb-7 bg-[lightpink] hover:bg-darkpink"
         >
           <span className="text-base text-white font-semibold">로그아웃</span>
         </button>
