@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import api from "@/utils/api";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import BackgroundImage from "@/assets/post/background.png";
@@ -14,26 +14,27 @@ declare global {
     kakao: any;
   }
 }
+const getPostData = async id => {
+  const res = await api.get(`/api/v1/boards/${id}`, 
+    { withCredentials: true }
+  );
+  console.log(res.data)
+  return res.data;
+};
 
 const Post = ({ params }: { params: { slug: number } }) => {
-  const [currentPerson, setCurrentPerson] = useState<Number>(0);
+  const [currentPerson, setCurrentPerson] = useState<Number>(1);
   const [locationAddress, setLocationAddress] = useState<String>("");
-  const [postData, setPostData] = useState<Object>({});
+  //const [postData, setPostData] = useState<Object>({});
   const [showModal, setShowModal] = useState(false);
-
+  // let locationAddress = ""
   const router = useRouter();
 
-  const getPostData = async id => {
-    const res = await axios.get(`http://localhost:8000/api/v1/boards/${id}`, 
-      { withCredentials: true }
-    );
-    console.log(res.data)
-    return res.data;
-  };
+  
 
   const deletePostData = async id => {
-    const res = await axios.delete(
-      `http://localhost:8000/api/v1/boards/${id}`,
+    const res = await api.delete(
+      `/api/v1/boards/${id}`,
       { withCredentials: true }
     );
 
@@ -41,8 +42,8 @@ const Post = ({ params }: { params: { slug: number } }) => {
   };
 
   const joinChatRoom = async id => {
-    const res = await axios.post(
-      `http://localhost:8000/api/v1/chatrooms/join/${id}`,
+    const res = await api.post(
+      `/api/v1/chatrooms/join/${id}`,
       {},
       { withCredentials: true }
     );
@@ -50,17 +51,19 @@ const Post = ({ params }: { params: { slug: number } }) => {
     return res.data;
   };
 
-  const getMutation = useMutation({
-    mutationFn: getPostData,
-    onSuccess: data => {
-      setPostData(data);
-      setCurrentPerson(data.currentCapacity);
-      loadKakaoMap(data.location.latitude, data.location.longitude);
-    },
-    onError: error => {
-      console.log(error.message);
-    },
-  });
+  
+
+  // const getMutation = useMutation({
+  //   mutationFn: getPostData,
+  //   onSuccess: data => {
+  //     setPostData(data);
+  //     setCurrentPerson(data.currentCapacity);
+  //     loadKakaoMap(data.location.latitude, data.location.longitude);
+  //   },
+  //   onError: error => {
+  //     console.log(error.message);
+  //   },
+  // });
 
   const deleteMutation = useMutation({
     mutationFn: deletePostData,
@@ -75,12 +78,11 @@ const Post = ({ params }: { params: { slug: number } }) => {
   const joinMutation = useMutation({
     mutationFn: joinChatRoom,
     onSuccess: data => {
-      // console.log(data);
-      //router.push(`/`);
+      router.push(`/chat/${data.chatRoomId}`);
     },
     onError: error => {
       console.log(error.message);
-    },
+    }
   });
 
   const clickEditButton = () => {
@@ -128,6 +130,7 @@ const Post = ({ params }: { params: { slug: number } }) => {
         geocoder.coord2Address(longitude, latitude, function (result, status) {
           if (status === window.kakao.maps.services.Status.OK) {
             setLocationAddress(result[0].address.address_name);
+            // locationAddress = result[0].address.address_name;
           }
         });
       });
@@ -136,8 +139,36 @@ const Post = ({ params }: { params: { slug: number } }) => {
     kakaoMapScript.addEventListener("load", onLoadKakaoAPI);
   };
 
+  const { data, isSuccess, error, isLoading } = useQuery({
+    queryKey: ['postData', params.slug],
+    queryFn: () => getPostData(params.slug),
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    retry: 1,
+    },
+    // onSuccess: data => {
+    //   setPostData(data);
+    //   setCurrentPerson(data.currentCapacity);
+    //   loadKakaoMap(data.location.latitude, data.location.longitude);
+    // },
+    // onError: error => {
+    //   console.log(error.message);
+    // },
+  );
+    console.log(data)
+  const postData = data || {};
+
   useEffect(() => {
-    getMutation.mutate(params.slug);
+    if (isSuccess && postData) {
+      setCurrentPerson(postData.currentPerson);
+      loadKakaoMap(postData.location.latitude, postData.location.longitude);
+    }
+  }, [isSuccess, postData]);
+  
+  //loadKakaoMap(data?.location.latitude, data?.location.longitude);
+
+  useEffect(() => {
+    //getMutation.mutate(params.slug);
 
     const eventSource = new EventSource(`http://localhost:8000/sse/board/${params.slug}`);
 
