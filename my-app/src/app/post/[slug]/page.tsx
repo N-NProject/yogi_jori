@@ -53,17 +53,17 @@ const Post = ({ params }: { params: { slug: number } }) => {
 
   
 
-  const getMutation = useMutation({
-    mutationFn: getPostData,
-    onSuccess: data => {
-      setPostData(data);
-      setCurrentPerson(data.currentCapacity);
-      loadKakaoMap(data.location.latitude, data.location.longitude);
-    },
-    onError: error => {
-      console.log(error.message);
-    },
-  });
+  // const getMutation = useMutation({
+  //   mutationFn: getPostData,
+  //   onSuccess: data => {
+  //     setPostData(data);
+  //     setCurrentPerson(data.currentCapacity);
+  //     loadKakaoMap(data.location.latitude, data.location.longitude);
+  //   },
+  //   onError: error => {
+  //     console.log(error.message);
+  //   },
+  // });
 
   const deleteMutation = useMutation({
     mutationFn: deletePostData,
@@ -160,7 +160,7 @@ const Post = ({ params }: { params: { slug: number } }) => {
 
   useEffect(() => {
     if (isSuccess && postData) {
-      setCurrentPerson(postData.currentCapacity);
+      setCurrentPerson(postData.currentPerson);
       loadKakaoMap(postData.location.latitude, postData.location.longitude);
     }
   }, [isSuccess, postData]);
