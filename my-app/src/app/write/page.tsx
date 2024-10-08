@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+import api from "@/utils/api";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -18,7 +18,7 @@ const Write = () => {
   const [view, setView] = useState(false);
   const [person, setPerson] = useState<number>();
   const [category, setCategory] = useState<String>();
-  const personItems = Array.from({ length: 15 }, (_, index) => index + 1);
+  const personItems = Array.from({ length: 14 }, (_, index) => index + 2);
   const [lat, setLat] = useState<number>(0);
   const [lng, setLng] = useState<number>(0);
 
@@ -35,7 +35,7 @@ const Write = () => {
   }
   const mutation = useMutation({
     mutationFn: async (newPost) => {
-      const res = await axios.post('http://localhost:8000/api/v1/boards', 
+      const res = await api.post('/api/v1/boards', 
         newPost, 
         {
           withCredentials: true,
@@ -136,19 +136,20 @@ const Write = () => {
           }
 
           ps.keywordSearch(keyword, function (data: any[], status: string) {
+            resultList.classList.add(
+              "h-[18rem]",
+              "bg-white",
+              "border",
+              "border-[1px]",
+              "rounded-[3px]",
+              "border-zinc-300",
+            );
+
             if (status === window.kakao.maps.services.Status.OK) {
               displayPlaces(data);
             } else {
               resultList.innerHTML =
                 '<div class="result-item mt-2">검색 결과가 없습니다.</div>';
-              resultList.classList.add(
-                "h-[18rem]",
-                "bg-white",
-                "border",
-                "border-[1px]",
-                "rounded-[3px]",
-                "border-zinc-300",
-              );
             }
           });
         });
@@ -206,9 +207,9 @@ const Write = () => {
         />
         <div className="flex md:flex-row flex-col justify-between w-full relative">
           <DatePicker
-            showTimeInput
             dateFormat="yyyy / MM / dd"
             shouldCloseOnSelect
+            withPortal
             minDate={new Date()}
             selected={selectedDate}
             onChange={date => setSelectedDate(date)}
