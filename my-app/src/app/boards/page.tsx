@@ -52,7 +52,7 @@ const Boards = () => {
 
   const posts = data?.data || [];
   const totalPage = data?.totalPage || 0;
-
+  console.log(posts)
   useEffect(() => {
     console.log("Loading:", isLoading);
     console.log("Data:", posts);
