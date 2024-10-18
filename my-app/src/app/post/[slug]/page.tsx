@@ -43,6 +43,13 @@ const Post = ({ params }: { params: { slug: number } }) => {
   };
 
   const joinChatRoom = async (id: number) => {
+    const cookieData = document.cookie;
+
+    if (cookieData.indexOf('accessToken') === -1) {
+      alert("로그인한 회원만 참여 가능합니다.\n로그인 페이지로 이동합니다.");
+      router.push('/login');
+    }
+
     const res = await api.post(
       `/api/v1/chatrooms/join/${id}`,
       {},
