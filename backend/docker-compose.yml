@@ -1,0 +1,49 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      TZ: Asia/Seoul
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - custom-network
+
+  backend:
+    container_name: nest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      TZ: Asia/Seoul
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
+    ports:
+      - '8000:8000'
+    depends_on:
+      - db
+    networks:
+      - custom-network
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+networks:
+  custom-network:
+    name: whispertalk_custom-network
+
+volumes:
+  postgres_data:
